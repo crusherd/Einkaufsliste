@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Creationdate:</b>
+  <%= @shopping_list.creationDate %>
+</p>
+
+<p>
+  <b>Owner:</b>
+  <%= @shopping_list.owner %>
+</p>
+
+<p>
+  <b>Article:</b>
+  <%= @shopping_list.article %>
+</p>
+
+
+<%= link_to 'Edit', edit_shopping_list_path(@shopping_list) %> |
+<%= link_to 'Back', shopping_lists_path %>

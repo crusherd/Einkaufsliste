@@ -1,0 +1,27 @@
+<h1>Listing shopping_lists</h1>
+
+<table>
+  <tr>
+    <th>Creationdate</th>
+    <th>Owner</th>
+    <th>Article</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @shopping_lists.each do |shopping_list| %>
+  <tr>
+    <td><%= shopping_list.creationDate %></td>
+    <td><%= shopping_list.owner %></td>
+    <td><%= shopping_list.article %></td>
+    <td><%= link_to 'Show', shopping_list %></td>
+    <td><%= link_to 'Edit', edit_shopping_list_path(shopping_list) %></td>
+    <td><%= link_to 'Destroy', shopping_list, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Shopping list', new_shopping_list_path %>

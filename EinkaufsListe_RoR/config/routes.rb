@@ -1,4 +1,16 @@
 EinkaufsListeRor::Application.routes.draw do
+  resources :purchase_histories
+
+  resources :users
+
+  resources :shopping_lists
+
+  resources :articles
+
+  resources :stores
+
+  resources :addresses
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
