@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  purchaseDate: 2012-05-11
+  shoppingList: 
+  article: 
+
+two:
+  purchaseDate: 2012-05-11
+  shoppingList: 
+  article: 
