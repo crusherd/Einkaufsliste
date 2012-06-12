@@ -11,4 +11,8 @@ class CreateAddresses < ActiveRecord::Migration
     end
     add_index :addresses, :store_id
   end
+  
+  def down
+    drop_table :users
+  end
 end

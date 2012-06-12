@@ -10,4 +10,8 @@ class CreateShoppingLists < ActiveRecord::Migration
     add_index :shopping_lists, :owner_id
     add_index :shopping_lists, :article_id
   end
+  
+  def down
+    drop_table :users
+  end
 end

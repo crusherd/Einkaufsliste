@@ -8,4 +8,8 @@ class CreateStores < ActiveRecord::Migration
     end
     add_index :stores, :address_id
   end
+  
+  def down
+    drop_table :users
+  end
 end

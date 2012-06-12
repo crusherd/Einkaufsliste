@@ -1,4 +1,14 @@
 class Store < ActiveRecord::Base
-  belongs_to :address
+  
+  # relationships
+  has_and_belongs_to_many :article
+  has_and_belongs_to_many :address, :dependent => :destroy
+  
+  # owner
+  
+  # accessible attributes
   attr_accessible :name
+  
+  # validation
+  
 end

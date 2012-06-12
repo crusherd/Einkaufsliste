@@ -1,5 +1,12 @@
 class PurchaseHistory < ActiveRecord::Base
-  belongs_to :shoppingList
-  belongs_to :article
+  
+  # relationships
+  has_and_belongs_to_many :article
+  
+  # owner
+  
+  # accessible attributes
   attr_accessible :purchaseDate
+  
+  # validation
 end

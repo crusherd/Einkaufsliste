@@ -8,4 +8,8 @@ class CreateUsers < ActiveRecord::Migration
     end
     add_index :users, :shoppingList_id
   end
+  
+  def down
+    drop_table :users
+  end
 end
