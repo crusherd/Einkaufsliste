@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
   add_index "addresses", ["store_id"], :name => "index_addresses_on_store_id"
 
   create_table "articles", :force => true do |t|
-    t.string   "name"
+    t.text     "name"
     t.decimal  "price"
     t.integer  "location_id"
     t.datetime "created_at",  :null => false
@@ -37,25 +37,23 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
 
   create_table "purchase_histories", :force => true do |t|
     t.date     "purchaseDate"
-    t.integer  "shoppingList_id"
     t.integer  "article_id"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "purchase_histories", ["article_id"], :name => "index_purchase_histories_on_article_id"
-  add_index "purchase_histories", ["shoppingList_id"], :name => "index_purchase_histories_on_shoppingList_id"
 
   create_table "shopping_lists", :force => true do |t|
     t.date     "creationDate"
-    t.integer  "owner_id"
+    t.integer  "user_id"
     t.integer  "article_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
 
   add_index "shopping_lists", ["article_id"], :name => "index_shopping_lists_on_article_id"
-  add_index "shopping_lists", ["owner_id"], :name => "index_shopping_lists_on_owner_id"
+  add_index "shopping_lists", ["user_id"], :name => "index_shopping_lists_on_user_id"
 
   create_table "stores", :force => true do |t|
     t.string   "name"

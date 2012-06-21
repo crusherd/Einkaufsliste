@@ -13,8 +13,12 @@
 <% @shopping_lists.each do |shopping_list| %>
   <tr>
     <td><%= shopping_list.creationDate %></td>
-    <td><%= shopping_list.owner %></td>
-    <td><%= shopping_list.article %></td>
+    <td><%= shopping_list.user.username %></td>
+    <% if shopping_list.article.nil? %>
+        <td><%= shopping_list.article.name %></td>
+    <% else %>
+        <td> </td>
+    <% end %>
     <td><%= link_to 'Show', shopping_list %></td>
     <td><%= link_to 'Edit', edit_shopping_list_path(shopping_list) %></td>
     <td><%= link_to 'Destroy', shopping_list, confirm: 'Are you sure?', method: :delete %></td>

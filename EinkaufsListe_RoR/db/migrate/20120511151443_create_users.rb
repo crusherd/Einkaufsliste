@@ -9,7 +9,7 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :shoppingList_id
   end
   
-  def down
+  def self.down
     drop_table :users
   end
 end

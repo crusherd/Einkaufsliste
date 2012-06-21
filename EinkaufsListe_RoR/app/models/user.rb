@@ -10,5 +10,5 @@ class User < ActiveRecord::Base
   
   # validation
   validates :username, :presence => true, :uniqueness => true
-  validates :shoppingList, :presence => false, :allow_nil => true, :allow_blank => true
+  #validates :shoppingList, :presence => false, :allow_nil => true, :allow_blank => true
 end
