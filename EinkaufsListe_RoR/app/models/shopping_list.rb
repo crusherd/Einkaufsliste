@@ -1,15 +1,14 @@
 class ShoppingList < ActiveRecord::Base
   
   # relationships
-  has_one :owner
   has_and_belongs_to_many :article # m-to-m relation
   
   # owner
-  belongs_to :owner
+  belongs_to :user
   
   # accessible attributes 
-  attr_accessible :creationDate
+  attr_accessible :creationDate, :user_id
   
   # validation
-  validates :owner,    :presence => true
+  validates :owner, :presence => true, :allow_nil => false, :allow_blank => false
 end

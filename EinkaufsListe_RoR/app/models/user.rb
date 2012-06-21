@@ -6,8 +6,9 @@ class User < ActiveRecord::Base
   # owner
   
   # accessible attributes 
-  attr_accessible :username
+  attr_accessible :username, :shoppingList
   
   # validation
-  validates :username,    :presence => true
+  validates :username, :presence => true, :uniqueness => true
+  validates :shoppingList, :presence => false, :allow_nil => true, :allow_blank => true
 end
