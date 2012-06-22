@@ -1,10 +1,12 @@
-<h1>Listing shopping_lists</h1>
+<h1>Listing Shopping Lists</h1>
 
 <table>
   <tr>
     <th>Creationdate</th>
+    <th>Name</th>
     <th>Owner</th>
     <th>Article</th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,8 +15,9 @@
 <% @shopping_lists.each do |shopping_list| %>
   <tr>
     <td><%= shopping_list.creationDate %></td>
-    <td><%= shopping_list.user.username %></td>
-    <% if shopping_list.article.nil? %>
+    <td><%= shopping_list.name%></td>
+    <td><%= link_to shopping_list.user.username, :action => "index", :controller => "users"  %></td>
+    <% if !shopping_list.article.nil? %>
         <td><%= shopping_list.article.name %></td>
     <% else %>
         <td> </td>

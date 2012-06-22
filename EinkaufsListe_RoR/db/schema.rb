@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
 
   create_table "shopping_lists", :force => true do |t|
     t.date     "creationDate"
+    t.string   "name"
     t.integer  "user_id"
     t.integer  "article_id"
     t.datetime "created_at",   :null => false

@@ -2,6 +2,7 @@ class CreateShoppingLists < ActiveRecord::Migration
   def change
     create_table :shopping_lists do |t|
       t.date :creationDate
+      t.string :name
       t.references :user
       t.references :article
 

@@ -18,6 +18,10 @@
     <%= f.date_select :creationDate %>
   </div>
   <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
     <%= f.label :user %><br />
     <%= f.select( :user_id, User.all.collect{|p| [ p.username, p.id ] }, {:include_blank => "Choose a User"}) %>
   </div>

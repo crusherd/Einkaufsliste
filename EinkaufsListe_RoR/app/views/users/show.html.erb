@@ -5,11 +5,12 @@
   <%= @user.username %>
 </p>
 
+<% if !@user.shoppingList.blank? %>
 <p>
   <b>Shoppinglist:</b>
-  <%= @user.shoppingList %>
+  Shopping List:  <%= link_to "List", @user.shoppingList %>
 </p>
-
+<% end %>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

@@ -12,8 +12,8 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= user.username %></td>
-    <% if user.shoppingList.nil? %>
-        <td><%= user.shoppingList %></td>
+    <% if !user.shoppingList.blank? %>
+        <td><%= link_to "List", :action=>"index", :controller=>"shopping_lists" %></td>
     <% else %>
         <td> </td>
     <% end %>
@@ -27,3 +27,7 @@
 <br />
 
 <%= link_to 'New User', new_user_path %>
+<br/>
+<% if @user.nil? && @user.blank?%>
+    <%= link_to "Create new Shopping List", new_shopping_list_path %>
+<% end %>
