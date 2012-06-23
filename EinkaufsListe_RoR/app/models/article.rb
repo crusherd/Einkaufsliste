@@ -1,9 +1,9 @@
 class Article < ActiveRecord::Base
   
   # relationships
-  has_and_belongs_to_many :shopping_list # m-to-m relation
+  has_and_belongs_to_many :shoppingList # m-to-m relation
   has_and_belongs_to_many :location
-  has_and_belongs_to_many :purchase_history
+  has_and_belongs_to_many :purchaseHistory
   
   # owner
   
@@ -12,5 +12,5 @@ class Article < ActiveRecord::Base
   
   # validation
   validates :location, :presence => true, :allow_nil => false, :allow_blank => false
-  validates :shopping_list, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :shoppingList, :presence => true, :allow_nil => false, :allow_blank => false
 end
