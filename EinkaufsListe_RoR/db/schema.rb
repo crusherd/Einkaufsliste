@@ -29,11 +29,13 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
     t.text     "name"
     t.decimal  "price"
     t.integer  "location_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "shoppingList_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   add_index "articles", ["location_id"], :name => "index_articles_on_location_id"
+  add_index "articles", ["shoppingList_id"], :name => "index_articles_on_shoppingList_id"
 
   create_table "purchase_histories", :force => true do |t|
     t.date     "purchaseDate"
@@ -59,11 +61,13 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
   create_table "stores", :force => true do |t|
     t.string   "name"
     t.integer  "address_id"
+    t.integer  "article_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   add_index "stores", ["address_id"], :name => "index_stores_on_address_id"
+  add_index "stores", ["article_id"], :name => "index_stores_on_article_id"
 
   create_table "users", :force => true do |t|
     t.string   "username"

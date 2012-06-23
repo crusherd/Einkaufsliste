@@ -4,6 +4,7 @@
   <tr>
     <th>Username</th>
     <th>Shoppinglist</th>
+    <th>Articles</th>
     <th></th>
     <th></th>
     <th></th>
@@ -12,10 +13,16 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= user.username %></td>
-    <% if !user.shoppingList.blank? %>
+    <% if user.shoppingList.exists? %>
         <td><%= link_to "List", :action=>"index", :controller=>"shopping_lists" %></td>
+        <% if !user.shoppingList. %>
+            <td><%= link_to "Articles", :action=>"index", :controller=>"articles"%></td>
+        <% else %>
+            <td></td>
+        <% end %>
     <% else %>
-        <td> </td>
+        <td></td>
+        <td></td>
     <% end %>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
@@ -28,6 +35,6 @@
 
 <%= link_to 'New User', new_user_path %>
 <br/>
-<% if @user.nil? && @user.blank?%>
+<% if !@users.blank? %>
     <%= link_to "Create new Shopping List", new_shopping_list_path %>
 <% end %>

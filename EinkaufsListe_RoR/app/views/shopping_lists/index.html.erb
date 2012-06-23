@@ -17,8 +17,8 @@
     <td><%= shopping_list.creationDate %></td>
     <td><%= shopping_list.name%></td>
     <td><%= link_to shopping_list.user.username, :action => "index", :controller => "users"  %></td>
-    <% if !shopping_list.article.nil? %>
-        <td><%= shopping_list.article.name %></td>
+    <% if !shopping_list.article.blank? %>
+        <td><%= shopping_list.article %></td>
     <% else %>
         <td> </td>
     <% end %>
@@ -32,3 +32,7 @@
 <br />
 
 <%= link_to 'New Shopping list', new_shopping_list_path %>
+<br />
+<% if @user.nil? && @user.blank?%>
+    <%= link_to "Create new Article", new_article_path %>
+<% end %>

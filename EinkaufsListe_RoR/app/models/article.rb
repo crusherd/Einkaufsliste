@@ -11,5 +11,6 @@ class Article < ActiveRecord::Base
   attr_accessible :name, :price, :location
   
   # validation
-  validates :location, :presence => true
+  validates :location, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :shopping_list, :presence => true, :allow_nil => false, :allow_blank => false
 end

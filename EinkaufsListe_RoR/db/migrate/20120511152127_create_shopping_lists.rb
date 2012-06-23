@@ -11,8 +11,4 @@ class CreateShoppingLists < ActiveRecord::Migration
     add_index :shopping_lists, :user_id
     add_index :shopping_lists, :article_id
   end
-  
-  def self.down
-    drop_table :shopping_lists
-  end
 end
