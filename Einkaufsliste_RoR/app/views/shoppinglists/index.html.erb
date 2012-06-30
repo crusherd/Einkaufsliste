@@ -1,0 +1,57 @@
+<% if @current_user.nil? %>
+<h1>Listing all shoppinglists</h1>
+<% else %>
+<h1> Listing shoppinglists of <%= @current_user.username %></h1>
+<% end %>
+
+
+<% if @shoppinglists.empty? %>
+  <br />
+  <% if @current_user.nil? %>
+  <p style="font-weight: bolder; color: red;">There are no shoppinglists created yet!!</p>
+  <% else %>
+  <p style="font-weight: bolder; color: red;">The User "<%= @current_user.username%>" has no shoppinglists created yet!!</p>
+  <% end %>
+
+<% else %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Creationdate</th>
+    <% if @current_user.nil? # show user names of tables only if we see all shoppinglists%>
+    <th>Owner</th>
+    <% end %>
+    <th>Articles</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @shoppinglists.each do |shoppinglist| %>
+  <tr>
+    <td><%= shoppinglist.name %></td>
+    <td><%= shoppinglist.creationDate %></td>
+    <% if @current_user.nil? # show user names of tables only if we see all shoppinglists%>
+    <td><%= 
+    		tmpuser = User.find_by_id(shoppinglist.user_id)
+    		if tmpuser.nil?
+    			"User deleted"
+    		else
+    			tmpuser.username
+    		end
+    	%></td>
+    <% end %>
+    <td><%= link_to 'Articles', select_shoppinglist_path(shoppinglist) %></td>
+    <td><%= link_to 'Show', shoppinglist %></td>
+    <td><%= link_to 'Edit', edit_shoppinglist_path(shoppinglist) %></td>
+    <td><%= link_to 'Destroy', shoppinglist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>
+
+<br />
+
+<%= link_to 'New Shoppinglist', new_shoppinglist_path %>
+<br />
+<%= link_to 'Show Users', users_path %>

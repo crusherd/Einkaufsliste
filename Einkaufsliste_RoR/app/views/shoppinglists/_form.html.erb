@@ -1,0 +1,31 @@
+<%= form_for(@shoppinglist) do |f| %>
+  <% if @shoppinglist.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shoppinglist.errors.count, "error") %> prohibited this shoppinglist from being saved:</h2>
+
+      <ul>
+      <% @shoppinglist.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label "Date of creation" %><br />
+    <%= f.date_select :creationDate %>
+  </div>
+  <% if @current_user.nil? %>
+  	<div class="field">
+  		<%= f.label :user %> <br />
+  		<%= f.select( :user_id, User.all.collect{|p| [ p.username, p.id ] }, {:include_blank => "Choose a User"}) %>
+  	</div>
+  <% end %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
