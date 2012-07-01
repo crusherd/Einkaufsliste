@@ -5,5 +5,6 @@ class Article < ActiveRecord::Base
   #
   
   # references
-  has_and_belongs_to_many :shoppinglists
+  has_many :listings
+  has_many :shoppinglists, :through => :listings
 end

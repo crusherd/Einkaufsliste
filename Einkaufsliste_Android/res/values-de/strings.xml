@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Einkaufsliste_Android</string>
-    <string name="starter_user_txt">Choose your username:</string>
+    <string name="starter_user_txt">Wähle deinen Benutzernamen:</string>
 </resources>

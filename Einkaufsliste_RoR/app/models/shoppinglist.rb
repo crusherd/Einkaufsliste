@@ -8,5 +8,6 @@ class Shoppinglist < ActiveRecord::Base
   
   # relationships
   belongs_to :user
-  has_and_belongs_to_many :articles
+  has_many :listings
+  has_many :articles, :through => :listings
 end

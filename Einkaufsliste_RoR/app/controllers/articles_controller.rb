@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
     if @current_shoppinglist.nil?
       @articles = Article.all
     else
-      @articles = @current_shoppinglist.articles 
+      @articles = @current_shoppinglist.articles
     end
 
     respond_to do |format|

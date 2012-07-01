@@ -101,6 +101,6 @@ class ShoppinglistsController < ApplicationController
   def select
     @shoppinglist = Shoppinglist.find(params[:id])
     session[:shoppinglist_id] = @shoppinglist.id
-    redirect_to articles_path
+    redirect_to listings_path
   end
 end
