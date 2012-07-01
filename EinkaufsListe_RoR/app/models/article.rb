@@ -8,7 +8,7 @@ class Article < ActiveRecord::Base
   # owner
   
   # accessible attributes 
-  attr_accessible :name, :price, :location
+  attr_accessible :name, :price, :location, :shoppingList
   
   # validation
   validates :location, :presence => true, :allow_nil => false, :allow_blank => false

@@ -12,7 +12,9 @@
 
 <p>
   <b>Article:</b>
-  <%= @shopping_list.article %>
+  <% if @shopping_list.blank? %>
+    <%= @shopping_list.article %>
+  <% end %>
 </p>
 
 

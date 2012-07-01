@@ -21,11 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :user %><br />
-    <%= f.text_field :user %>
-  </div>
-  <div class="field">
-    <%= f.label :article %><br />
-    <%= f.text_field :article %>
+    <%= f.select( :user_id, User.all.collect{|p| [ p.username, p.id ] }, {:include_blank => "Choose a User"}) %>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -15,8 +15,8 @@
     <td><%= user.username %></td>
     <% if user.shoppingList.exists? %>
         <td><%= link_to "List", :action=>"index", :controller=>"shopping_lists" %></td>
-        <% if ShoppingList.blank? %>
-            <td><%= link_to "Articles", :action=>"index", :controller=>"articles"%></td>
+        <% if Article.count > 0 %>
+            <td><%= link_to "Articles", :action=>"index", :controller=>"articles" %></td>
         <% else %>
             <td></td>
         <% end %>

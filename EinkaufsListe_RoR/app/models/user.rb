@@ -9,6 +9,5 @@ class User < ActiveRecord::Base
   attr_accessible :username, :shoppingList
   
   # validation
-  validates :username, :presence => true, :uniqueness => true
-  #validates :shoppingList, :presence => false, :allow_nil => true, :allow_blank => true
+  validates :username, :presence => true, :uniqueness => true, :allow_nil => true, :allow_blank => true
 end

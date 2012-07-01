@@ -18,7 +18,11 @@
     <td><%= address.zipCode %></td>
     <td><%= address.city %></td>
     <td><%= address.country %></td>
-    <td><%= address.store %></td>
+    <% if Store.count > 0 %>
+        <td><%= link_to "Stores", :action=>"index", :controller=>"stores" %></td>
+    <% else%>
+        <td></td>
+    <% end %>
     <td><%= link_to 'Show', address %></td>
     <td><%= link_to 'Edit', edit_address_path(address) %></td>
     <td><%= link_to 'Destroy', address, confirm: 'Are you sure?', method: :delete %></td>
@@ -29,3 +33,7 @@
 <br />
 
 <%= link_to 'New Address', new_address_path %>
+<br />
+<% if !@addresses.blank? %>
+  <%= link_to "Create new Store", new_store_path %>
+<% end %>

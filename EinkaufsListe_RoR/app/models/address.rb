@@ -1,12 +1,16 @@
 class Address < ActiveRecord::Base
   
   # relationships
-  has_and_belongs_to_many :store
   
   # owner
+  belongs_to :store
   
   # accessible attributes
-  attr_accessible :city, :country, :street, :zipCode
+  attr_accessible :city, :country, :street, :zipCode, :store_id
   
   # validation
+  validates :street, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :city, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :country, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :zipCode, :presence => true, :allow_nil => false, :allow_blank => false
 end
