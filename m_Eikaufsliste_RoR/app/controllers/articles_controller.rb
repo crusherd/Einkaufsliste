@@ -2,12 +2,7 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @current_shoppinglist = Shoppinglist.find_by_id(session[:shoppinglist_id])
-    if @current_shoppinglist.nil?
-      @articles = Article.all
-    else
-      @articles = @current_shoppinglist.articles
-    end
+    @articles = Article.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,10 +25,6 @@ class ArticlesController < ApplicationController
   # GET /articles/new.json
   def new
     @article = Article.new
-    @current_shoppinglist = Shoppinglist.find_by_id(session[:shoppinglist_id])
-    if !@current_shoppinglist.nil?
-      @current_shoppinglist.articles << @article 
-    end
 
     respond_to do |format|
       format.html # new.html.erb

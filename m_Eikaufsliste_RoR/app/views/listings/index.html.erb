@@ -1,45 +1,61 @@
-<% if @current_shoppinglist.nil? %>
-<h1>Listing all shoppinglists</h1>
+<% if !@current_list.nil? %>
+	<h1> Articles of "<%= @current_list.name %>"</h1>
+	<table>
+  		<tr>
+			<th>Amount</th>
+			<th>Article</th>
+			<th>Price</th>
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+	  	<% @articles = @current_list.articles.group(:id) %>
+		<% @articles.each do |entry| %>
+			<% @list = Listing.where(:article_id => entry.id, :shoppinglist_id => @current_list.id).all %>
+			<% @list.each do |listentry| %>
+				<tr>
+					<td><%= listentry.amount %></td>
+					<td><%= entry.name %> </td>
+					<td><%= entry.price %></td>
+					<td><%= link_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+				</tr>
+			<% end %>
+		<% end %>
+	</table>
+	<br />
+	
+	<%= render 'form' %>
+	<br />
+	
+	<%= link_to 'Back to Shoppinglist', shoppinglists_path %> <br/>
 <% else %>
-<h1> Listing articles of "<%= @current_shoppinglist.name %>"</h1>
+	<% Listing.select(:shoppinglist_id).order("shoppinglist_id ASC").group(:shoppinglist_id).each do |list_entry| %>
+		<% @current_list = Shoppinglist.find_by_id(list_entry.shoppinglist_id)%>
+		<%if !@current_list.articles.nil? %>
+			<h3> Articles of "<%= @current_list.name %>" </h3>
+			  <table>
+			  <tr>
+			    <th>Amount</th>
+			    <th>Article</th>
+			    <th>Price</th>
+			    <th></th>
+			    <th></th>
+			    <th></th>
+			  </tr>
+			  	<% @articles = @current_list.articles %>
+				<% @articles.each do |entry| %>
+					<% @list = Listing.find_by_article_id_and_shoppinglist_id(entry.id,@current_list.id) %>
+				<tr>
+				    <td><%= @list.amount %></td>
+				    <td><%= entry.name %> </td>
+				    <td><%= entry.price %></td>
+				    <td><%= link_to 'Delete entry', @list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+				</tr>
+				<% end %>
+			</table>
+			<hr />
+		<% end %>
+	<% end %>
 <% end %>
 
-<% if @listings.empty? %>
-  <br />
-  <% if @current_shoppinglist.nil? %>
-  <p style="font-weight: bolder; color: red;">There are no articles created yet!!</p>
-  <% else %>
-  <p style="font-weight: bolder; color: red;">The shoppinglist "<%= @current_shoppinglist.name %>" has no articles yet!!</p>
-  <% end %>
-<% else %>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @articles.each do |article| %>
-  <tr>
-    <td><%= article.name %></td>
-    <td><%= article.price %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to 'Edit', edit_article_path(article) %></td>
-    <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-<% end %>
-
-<br />
-
-<%= link_to 'New Article', new_article_path %>
-<%= 
-if @current_shoppinglist.nil?
-	link_to "Show Users", users_path
-else
-	link_to "Back to "+@current_shoppinglist.name, shoppinglists_path
-end
-%>
+<%= link_to 'Show Users', users_path %>

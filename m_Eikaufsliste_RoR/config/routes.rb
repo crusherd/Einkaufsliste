@@ -4,10 +4,14 @@ EinkaufslisteRor::Application.routes.draw do
   resources :shoppinglists
 
   resources :users
+  
+  resources :listings
 
   get "users/select/:id" => "users#select", as: "select_user"
   
   get "shoppinglists/select/:id" => "shoppinglists#select", as: "select_shoppinglist" 
+  
+  post "listings/add" => "listings#add", as: "add"
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
