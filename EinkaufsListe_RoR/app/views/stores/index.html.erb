@@ -11,7 +11,12 @@
 <% @stores.each do |store| %>
   <tr>
     <td><%= store.name %></td>
-    <td><%= link_to "test", :action=>"index", :controller=>"addresses" %></td>
+    <% if Address.count > 0 %>
+        <td><%= link_to "Address", :action=>"index", :controller=>"addresses" %></td>
+    <% else %>
+        <td></td>
+    <% end %>
+    <td><%= link_to 'Show', store %></td>
     <td><%= link_to 'Edit', edit_store_path(store) %></td>
     <td><%= link_to 'Destroy', store, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
@@ -21,3 +26,11 @@
 <br />
 
 <%= link_to 'New Store', new_store_path %>
+<br />
+<% if !@stores.blank? %>
+    <%= link_to "Create new Address", new_address_path %>
+<% end %>
+<br />
+<% if !@stores.blank? %>
+    <%= link_to "Create new Article", new_article_path %>
+<% end %>

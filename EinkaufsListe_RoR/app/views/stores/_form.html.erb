@@ -15,10 +15,6 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.select( :address_id, Address.all.collect{|a| [(a.street + ", " + a.zipCode + ", " + a.city + ", " + a.country), a.id]}, {:include_blank => "Choose an Address"})%>
-  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

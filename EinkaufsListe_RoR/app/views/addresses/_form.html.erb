@@ -27,6 +27,11 @@
     <%= f.label :country %><br />
     <%= f.text_field :country %>
   </div>
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.select( :store_id, Store.all.collect{|s| [ s.name, s.id]}, {:include_blank => "Choose a Shop"})%>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

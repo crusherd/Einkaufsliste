@@ -5,7 +5,7 @@
     <th>Creationdate</th>
     <th>Name</th>
     <th>Owner</th>
-    <th>Article</th>
+    <th>Articles</th>
     <th></th>
     <th></th>
     <th></th>
@@ -33,10 +33,10 @@
 
 <%= link_to 'New Shopping list', new_shopping_list_path %>
 <br />
-<%= link_to "Create address for store", new_address_path %>
+<%= link_to "Create new Store", new_store_path %>
 <br />
-<% if Address.count > 0 %>
-    <%= link_to "Create new Store", new_store_path %>
+<% if Store.count > 0 %>
+    <%= link_to "Create address for store", new_address_path %>
 <% end %>
 <br />
 <% if !@shopping_lists.blank? && Store.count > 0 %>

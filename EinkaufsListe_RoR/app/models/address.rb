@@ -6,7 +6,7 @@ class Address < ActiveRecord::Base
   belongs_to :store
   
   # accessible attributes
-  attr_accessible :city, :country, :street, :zipCode, :store_id
+  attr_accessible :city, :country, :street, :zipCode, :store_id, :store
   
   # validation
   validates :street, :presence => true, :allow_nil => false, :allow_blank => false
