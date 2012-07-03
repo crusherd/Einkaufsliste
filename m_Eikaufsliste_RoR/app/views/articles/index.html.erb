@@ -1,16 +1,8 @@
-<% if @current_shoppinglist.nil? %>
-<h1>Listing all shoppinglists</h1>
-<% else %>
-<h1> Listing articles of "<%= @current_shoppinglist.name %>"</h1>
-<% end %>
+<h1>Listing all articles</h1>
 
 <% if @articles.empty? %>
   <br />
-  <% if @current_shoppinglist.nil? %>
   <p style="font-weight: bolder; color: red;">There are no articles created yet!!</p>
-  <% else %>
-  <p style="font-weight: bolder; color: red;">The shoppinglist "<%= @current_shoppinglist.name %>" has no articles yet!!</p>
-  <% end %>
 <% else %>
 <table>
   <tr>
@@ -36,10 +28,5 @@
 <br />
 
 <%= link_to 'New Article', new_article_path %>
-<%= 
-if @current_shoppinglist.nil?
-	link_to "Show Users", users_path
-else
-	link_to "Back to "+@current_shoppinglist.name, shoppinglists_path
-end
-%>
+<br />
+<%= link_to "Show Users", users_path %>
