@@ -13,6 +13,6 @@ class CreateAddresses < ActiveRecord::Migration
   end
   
   def down
-    drop_table :users
+    drop_table :addresses
   end
 end

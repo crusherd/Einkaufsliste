@@ -13,4 +13,6 @@ class Address < ActiveRecord::Base
   validates :city, :presence => true, :allow_nil => false, :allow_blank => false
   validates :country, :presence => true, :allow_nil => false, :allow_blank => false
   validates :zipCode, :presence => true, :allow_nil => false, :allow_blank => false
+  
+  validates :store, :presence => true, :allow_nil => false, :allow_blank => false
 end

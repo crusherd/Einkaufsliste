@@ -3,7 +3,7 @@ class Article < ActiveRecord::Base
   # relationships
   has_and_belongs_to_many :shoppingList # m-to-m relation
   has_and_belongs_to_many :store
-  has_and_belongs_to_many :purchaseHistory
+  #has_and_belongs_to_many :purchaseHistory
   
   # owner
   

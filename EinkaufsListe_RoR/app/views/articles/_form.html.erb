@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :store %><br />
-    <%= f.text_field :store %>
+    <%= f.select( :store_id, Store.all.collect { |s| [s.name, s.id]}, {:include_blank=>true},{ :multiple=>true, :size=>5}) %>
   </div>
   <div class="actions">
     <%= f.submit %>

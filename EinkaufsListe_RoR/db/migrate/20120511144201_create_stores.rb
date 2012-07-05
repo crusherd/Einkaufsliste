@@ -7,10 +7,11 @@ class CreateStores < ActiveRecord::Migration
       
       t.timestamps
     end
+    add_index :stores, :address_id
     add_index :stores, :article_id
   end
   
-  def down
+  def self.down
     drop_table :stores
   end
 end

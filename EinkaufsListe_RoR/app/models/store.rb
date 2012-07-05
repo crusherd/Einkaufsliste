@@ -2,7 +2,7 @@ class Store < ActiveRecord::Base
   
   # relationships
   has_many :address, :dependent => :destroy
-  #has_and_belongs_to_many :article
+  has_and_belongs_to_many :article
   
   # owner
   

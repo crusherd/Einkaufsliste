@@ -36,4 +36,17 @@
 <br/>
 <% if !@users.blank? %>
     <%= link_to "Create new Shopping List", new_shopping_list_path %>
+    <br />
+    <%= link_to "Create new Store", new_store_path %>
+<% end %>
+
+<br />
+<br />
+
+<% if Store.count > 0 %>
+    <%= link_to "Show Stores", :action=>"index", :controller=>"stores"%>
+<% end %>
+<br />
+<% if Article.count > 0%>
+    <%= link_to "Show Articles", :action=>"index", :controller=>"articles" %>
 <% end %>

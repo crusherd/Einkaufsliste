@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20120511152334) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "stores", ["address_id"], :name => "index_stores_on_address_id"
   add_index "stores", ["article_id"], :name => "index_stores_on_article_id"
 
   create_table "users", :force => true do |t|
