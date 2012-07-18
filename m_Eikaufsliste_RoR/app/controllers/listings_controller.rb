@@ -11,7 +11,7 @@ class ListingsController < ApplicationController
     
     respond_to do |format|
       format.html # index.html.erb
-	  format.json { render :json => @listings, :include=> [:article, :shoppinglist] }
+	    format.json { render :json => @listings}
     end
   end
   
@@ -34,7 +34,7 @@ class ListingsController < ApplicationController
     
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @listings, :include=> [:article, :shoppinglist] }
+      format.json { render :json => @listings }
     end
   end
   
@@ -49,7 +49,7 @@ class ListingsController < ApplicationController
     respond_to do |format|
       if @listing.save
         format.html {redirect_to listings_path, notice: 'Article was successfully created for' + @current_shoppinglist.name + '.' }
-        format.json { render :json => @listings, :include=> [:article, :shoppinglist] }
+        format.json { render :json => @listings}
       else
         format.html { render action: "new" }
         format.json { render json: @listing.errors, status: :unprocessable_entity }
@@ -64,7 +64,7 @@ class ListingsController < ApplicationController
     respond_to do |format|
       if @listing.save
         format.html {redirect_to listings_path, notice: 'Article was successfully add to' + @current_list.name + '.' }
-        format.json { render :json => @listings, :include=> [:article, :shoppinglist] }
+        format.json { render :json => @listings }
       else
         format.html { render action: "index"}
         format.json { render json: @listing.errors, status: :unprocessable_entity }
