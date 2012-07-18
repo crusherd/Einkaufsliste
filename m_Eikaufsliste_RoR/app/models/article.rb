@@ -4,7 +4,7 @@ class Article < ActiveRecord::Base
   
   # validation
   validates :name, :presence => true, :allow_nil => false, :allow_blank => false
-  validates :price, :presence => true, :allow_nil => false, :allow_blank => false
+  validates :price, :presence => true, :allow_nil => false, :allow_blank => false, :numericality => { :greater_than => 0 }
   # uniqueness of touple price and name
   validates :name, :uniqueness => {:scope => :price}
   

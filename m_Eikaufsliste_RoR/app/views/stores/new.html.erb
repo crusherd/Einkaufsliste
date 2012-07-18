@@ -1,0 +1,24 @@
+<% content_for(:head) do %>
+<script language="javascript">
+	function onchange_handler() {
+		if ( document.getElementById('address_id').selectedIndex > 0 )
+		 {
+		 	document.getElementById('street').disabled = true;
+		 	document.getElementById('zipcode').disabled = true;
+		 	document.getElementById('city').disabled = true;
+		 }
+		else 
+		 {
+		 	document.getElementById('street').disabled = false;
+		 	document.getElementById('zipcode').disabled = false;
+		 	document.getElementById('city').disabled = false;
+		 }
+	}
+</script>
+<% end %>
+
+<h1>New store</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back', stores_path %>

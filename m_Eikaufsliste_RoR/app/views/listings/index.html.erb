@@ -16,7 +16,7 @@
 				<tr>
 					<td><%= listentry.amount %></td>
 					<td><%= entry.name %> </td>
-					<td><%= entry.price %></td>
+					<td><%= number_to_currency entry.price, :unit=>"&euro; "%></td>
 					<td><%= link_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 				</tr>
 			<% end %>
@@ -48,7 +48,7 @@
 				<tr>
 				    <td><%= @list.amount %></td>
 				    <td><%= entry.name %> </td>
-				    <td><%= entry.price %></td>
+				    <td><%= number_to_currency entry.price, :unit=>"&euro; " %></td>
 				    <td><%= link_to 'Delete entry', @list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 				</tr>
 				<% end %>

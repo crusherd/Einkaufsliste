@@ -7,7 +7,7 @@
 
 <p>
   <b>Price:</b>
-  <%= @article.price %>
+  <%= number_to_currency @article.price, :unit=>"&euro; " %>
 </p>
 
 

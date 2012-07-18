@@ -1,4 +1,8 @@
 EinkaufslisteRor::Application.routes.draw do
+  resources :addresses
+
+  resources :stores
+
   resources :articles
 
   resources :shoppinglists

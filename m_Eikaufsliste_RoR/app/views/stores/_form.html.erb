@@ -1,0 +1,52 @@
+<%= form_for(@store) do |f| %>
+  <% if @store.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@store.errors.count, "error") %> prohibited this store from being saved:</h2>
+
+      <ul>
+      <% @store.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table style="border-collapse:collapse;" border="1px">
+    <tr style="text-align: left; background-color:#10DD66;">
+    	<th> <%= f.label :name %> </th>
+	</tr>	
+	<tr style="background-color:#AAFFAA;">
+		<td> <%= f.text_field :name %> </td>
+  	</tr>
+  </table>
+  <br/>
+  <table style="border-collapse:collapse;" border="1px">
+  	<caption style="text-align: left;">Optional: </caption>
+	<tr style="text-align: left; background-color:#10DD66;">
+		<th> <%= label_tag 'street', 'Street' %> </th>
+    	<th> <%= label_tag 'zipcode', 'ZipCode' %> </th>
+    	<th> <%= label_tag 'city', 'City' %> </th>
+    	<th style="border-left:black solid 2px;"> Or</th>
+    </tr>
+	<tr style="background-color:#AAFFAA;">
+		<td> <%= text_field_tag :street, nil,:size => 8%></td>
+		<td> <%= text_field_tag :zipcode, nil, :size => 4 %></td>
+		<td> <%= text_field_tag :city, nil,:size => 8 %> </td>
+		<td style="border-left:black solid 2px;">
+			<%= select_tag :address_id, options_for_select(
+					Address.all.map { |a| [ a.street + ", " + a.zipCode + " " + a.city , a.id] }
+				), :prompt => "Choose an Address", 
+				:onChange => 'javascript:onchange_handler()'
+			%>
+		</td>
+	</tr>
+  </table>
+  <br/>
+  <div class="submit">
+  	<%= f.submit %>
+  </div>
+<% end %>
+
+<hr/>
+
+
