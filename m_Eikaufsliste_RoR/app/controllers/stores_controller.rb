@@ -41,6 +41,24 @@ class StoresController < ApplicationController
   # POST /stores.json
   def create
     @store = Store.new(params[:store])
+    @mapped_address = Address.find_by_id(params[:address_id])
+    
+    # if address is not found (nil), nothing was selected by the selectbox
+    if @mapped_address.nil? 
+      # check if user want to assign the store with a new address
+      if params[:street] != ""
+        if params[:zipcode] != ""
+          if params[:city] != ""
+            @new_address = Address.new(:city => params[:city], :street => params[:street], :zipcode => params[:zipcode])
+            @new_address.save
+            @store.addresses << @new_address
+          end
+        end
+      end
+    else
+      # can assign the selected address to store
+      @store.addresses << @mapped_address
+    end
 
     respond_to do |format|
       if @store.save
@@ -79,5 +97,26 @@ class StoresController < ApplicationController
       format.html { redirect_to stores_url }
       format.json { head :no_content }
     end
+  end
+  
+  
+  def add_address
+    @current_store = Store.find(params[:id])
+    redirect_to new_address_ref_path(@current_store)
+  end
+    
+  def delete_address
+    @store = Store.find(params[:id])
+    @address = Address.find(params[:address_id])
+    
+    if !@address.nil?
+      @store.addresses.delete(@address)    
+    end
+    
+    respond_to do |format|
+      format.html { redirect_to stores_url }
+      format.json { head :no_content }
+    end
+    
   end
 end

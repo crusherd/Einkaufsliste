@@ -1,0 +1,33 @@
+// Place all the styles related to the users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$green: #10DD66;
+$lightgreen: #AAFFAA;
+
+@mixin green_bg {
+  background-color: $green;
+}
+
+@mixin lightgreen_bg {
+  background-color: $lightgreen;
+}
+
+.myTable {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.myTable tr, .myTable td, .myTable th {
+  border: 1px solid black;
+}
+
+#head {
+  @include green_bg;
+  text-align: left; 
+}
+
+#content {
+  @include lightgreen_bg;
+  text-align: left;
+}

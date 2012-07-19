@@ -1,0 +1,53 @@
+<% @current_store = Store.find(params[:store_id]) %>
+
+<% if @current_store.nil? %>
+
+<% else %>
+	<h1>Add address to store "<%= @current_store.name %>"</h1>
+
+	<%= form_for @address, :url => create_address_ref_path(@current_store) do |f| %>
+		<table class="myTable">
+			<tr id="head">
+				<th> <%= f.label :street %> </th>
+		    <th> <%= f.label :zipcode %> </th>
+		    <th> <%= f.label :city %> </th>
+		    <th></th>
+		  </tr>
+			<tr id="content">
+				<td> <%= f.text_field :street, :size => 8%></td>
+				<td> <%= f.text_field :zipcode, :size => 4 %></td>
+				<td> <%= f.text_field :city, :size => 8 %> </td>
+				<td>
+	    		<%= submit_tag 'Create and add to store' %>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+	
+	<%= form_tag add_address_ref_path(@current_store) do %>
+		<table class="myTable">
+		<tr id="head">
+			<th> <%= label_tag 'address', 'Address' %> </th>
+			<th></th>
+		</tr>
+		<tr id="content">
+			<td>
+				<%= select_tag :address_id, options_for_select(
+						Address.all.map { |a| [ a.street + ", " + a.zipcode + " " + a.city , a.id] }
+					), :prompt => "Choose an Address", 
+					:onChange => 'javascript:onchange_handler()'
+				%>
+			</td>
+			<td><%= submit_tag 'Add to store' %></td>
+		</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+	<%= button_to 'Back to Stores', stores_path , :method => :get%>
+
+<% end %>

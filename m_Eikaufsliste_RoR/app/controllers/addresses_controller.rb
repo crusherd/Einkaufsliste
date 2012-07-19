@@ -25,7 +25,7 @@ class AddressesController < ApplicationController
   # GET /addresses/new.json
   def new
     @address = Address.new
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @address }
@@ -48,6 +48,54 @@ class AddressesController < ApplicationController
         format.json { render json: @address, status: :created, location: @address }
       else
         format.html { render action: "new" }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  
+  def new_address_ref
+    @address = Address.new
+    @current_store = Store.find_by_id(:store_id)
+    
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @address }
+    end
+  end
+  
+  def create_address_ref
+    @current_store = Store.find_by_id(params[:store_id])
+    @address = Address.new(params[:address])
+    
+    @current_store.addresses << @address 
+    
+    respond_to do |format|
+      if @address.save
+        format.html { redirect_to @current_store, notice: 'Address was successfully created.' }
+        format.json { render json: @current_store, status: :created, location: @current_store }
+      else
+        format.html { render action: "new_address_ref" }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def add_address_ref
+    @address = Address.new
+    @current_store = Store.find_by_id(params[:store_id])
+    @address_id = params[:address_id]
+    
+    
+    respond_to do |format|
+      if @address_id != ""
+        @address = Address.find_by_id(@address_id)
+        @current_store.addresses << @address
+        
+        format.html { redirect_to stores_path, notice: 'Address was successfully created.' }
+        format.json { render json: @current_store, status: :created, location: @current_store }
+      else
+        format.html { render action: "new_address_ref" }
         format.json { render json: @address.errors, status: :unprocessable_entity }
       end
     end

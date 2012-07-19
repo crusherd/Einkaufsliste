@@ -1,23 +1,38 @@
 <h1>Listing stores</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<hr />
+<hr />
 
 <% @stores.each do |store| %>
-  <tr>
-    <td><%= store.name %></td>
-    <td><%= link_to 'Show', store %></td>
-    <td><%= link_to 'Edit', edit_store_path(store) %></td>
-    <td><%= link_to 'Destroy', store, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+	<h2> <%= store.name %> </h2>
+	<% if store.addresses.size > 0 %>
+		<table>
+			<tr id="head">
+				<th> Street </th>
+				<th> Zipcode </th>
+				<th> City </th>
+				<th> </th>		
+			</tr>
+			<% store.addresses.each do |address| %>
+				<tr id="content">
+					<td> <%= address.street %> </td>
+					<td> <%= address.zipcode %> </td>
+					<td> <%= address.city %> </td>
+					<td> <%= button_to 'Delete assignment', delete_address_store_path(:id => store,:address_id => address) , data: { confirm: 'Are you sure?' } %> </td>
+				</tr>	
+			<% end %>
+		</table>
+	<% else %>
+		<p style="font-weight:bolder;"> <%= store.name %> has no assigned addresses</p>
+	<% end %>
+	<br/>
+	
+	<div style="display: table-cell;"><%= button_to 'Edit', edit_store_path(store), :method => :get %></div>
+	<div style="display: table-cell;"><%= button_to 'Add Address', add_address_path(store)%></div>
+	<div style="display: table-cell;"><%= button_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure' }%></div>
+	<hr/>
 <% end %>
-</table>
+
 
 <br />
 
-<%= link_to 'New Store', new_store_path %>
+<%= button_to 'New Store', new_store_path, :method => :get %>

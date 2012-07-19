@@ -11,19 +11,20 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :street %><br />
-    <%= f.text_field :street %>
-  </div>
-  <div class="field">
-    <%= f.label :zipCode %><br />
-    <%= f.text_field :zipCode %>
-  </div>
-  <div class="field">
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<table class="myTable">
+		<tr id="head">
+			<th> <%= f.label :street %> </th>
+	    <th> <%= f.label :zipcode %> </th>
+	    <th> <%= f.label :city %> </th>
+	    <th></th>
+	  </tr>
+		<tr id="content">
+			<td> <%= f.text_field :street, :size => 8%></td>
+			<td> <%= f.text_field :zipcode, :size => 4 %></td>
+			<td> <%= f.text_field :city, :size => 8 %> </td>
+			<td>
+		    <%= f.submit %>
+			</td>
+		</tr>
+	</table>
 <% end %>

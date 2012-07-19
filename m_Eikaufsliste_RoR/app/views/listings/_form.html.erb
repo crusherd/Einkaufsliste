@@ -1,11 +1,11 @@
 <%= form_tag :action => 'add' do %>
-	<table style="border-collapse:collapse;" border="1px">
-	 	<tr style="text-align: left; background-color:#10DD66;">
+	<table class="myTable">
+	 	<tr id="head">
 	 		<th><%= label_tag 'amount', 'Amount'%></th>
 	 		<th><%= label_tag 'article', 'Article' %></th>
 	 		<th></th>
 	 	</tr>
-	 	<tr style="background-color:#AAFFAA;">
+	 	<tr id="content">
 	 		<td><%= text_field_tag :amount, nil, :size => 1%></td>
 	 		<td><%= select_tag :article_id, options_from_collection_for_select(Article.all, :id, :name), :prompt => "Choose an Article" %></td>
 	 		<td><%= submit_tag "Add to List" %></td>
@@ -16,14 +16,14 @@
 <br/>
 
 <%= form_tag :action => 'create' do %>
-	<table style="border-collapse:collapse;" border="1px">
-	 	<tr style="text-align: left; background-color:#10DD66;">
+	<table class="myTable">
+	 	<tr id="head">
 	 		<th><%= label_tag 'amount', 'Amount'%></th>
 	 		<th><%= label_tag 'name', 'Article name'%></th>	 		
 			<th><%= label_tag 'price', 'Price'%></th>
 			<th></th>
 		</tr>
-		<tr style="background-color:#AAFFAA;">
+		<tr id="content">
 			<td><%= text_field_tag :amount, nil, :size => 1%></td>
 			<td><%= text_field_tag :name, nil, :size => 8%></td>
 			<td><%= text_field_tag :price, nil, :size => 1%></td>
