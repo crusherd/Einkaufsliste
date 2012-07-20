@@ -9,11 +9,11 @@ import htwg.backend.User;
 public class Controller {
 	private List<User> users;
 	
-	public List<User> createUsers() {
+	public void createUsers() {
 		
 	}
 	
-	private (String filename) {
+	private void foo(String filename) {
 		
 	}
 	
