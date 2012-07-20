@@ -14,7 +14,7 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -167,8 +167,14 @@ public class MainStarterActivity extends Activity {
 		}
     }
     
-    private void startUserSelection(JSONArray jsonArray) {
-    	Intent intent = new Intent().setClass(this, UserListActivity.class);
+    private void startUserSelection(JSONArray usernames) {
+    	Intent intent = new Intent(this, UserListActivity.class);
+    	for(int i = 0; i < usernames.length(); ++i)
+			try {
+				intent.putExtra("json_users" + i, usernames.getJSONObject(i).toString());
+			} catch (JSONException e) {
+				Log.i(MainStarterActivity.class.getName(),e.getMessage());
+			}
     	startActivity(intent);
     }
 }

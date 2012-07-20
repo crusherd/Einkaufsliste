@@ -1,22 +1,16 @@
 package htwg.connection;
 
-import htwg.project.R;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 public class HttpConnection {
 
@@ -24,7 +18,6 @@ public class HttpConnection {
 	
 	private String ipAddress = "";
 	private HttpURLConnection connection = null;
-	private Context context = null;
 	private URL url = null;
 	private InputStream inStream = null;
 	
@@ -45,7 +38,6 @@ public class HttpConnection {
 			throw new RuntimeException("no context given");
 		}
 		this.ipAddress = ipAddress;
-		this.context = context;
 	}
 	
 	private void initConnection(String urlAddress) throws IOException {
