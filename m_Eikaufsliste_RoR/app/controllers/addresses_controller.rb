@@ -90,6 +90,7 @@ class AddressesController < ApplicationController
     respond_to do |format|
       if @address_id != ""
         @address = Address.find_by_id(@address_id)
+        @current_store.addresses.delete(@address) # prohibit duplicate references to store
         @current_store.addresses << @address
         
         format.html { redirect_to stores_path, notice: 'Address was successfully created.' }

@@ -5,28 +5,48 @@
 <% if @stores.count > 0 %>
 	<% @stores.each do |store| %>
 		<h2> <%= store.name %> </h2>
+		<h3> Adresses: </h3>
 		<% if store.addresses.size > 0 %>
 			<table>
 				<tr id="head">
 					<th> Street </th>
 					<th> Zipcode </th>
 					<th> City </th>
-					<th> </th>		
+					<th> </th>	
 				</tr>
 				<% store.addresses.each do |address| %>
 					<tr id="content">
 						<td> <%= address.street %> </td>
 						<td> <%= address.zipcode %> </td>
 						<td> <%= address.city %> </td>
-						<td> <%= button_to 'Delete assignment', delete_address_store_path(:id => store,:address_id => address) , data: { confirm: 'Are you sure?' } %> </td>
+						<td> <%= button_to 'Delete assignment', delete_address_ref_path(:id => store,:address_id => address) , data: { confirm: 'Are you sure?' } %> </td>
 					</tr>	
 				<% end %>
 			</table>
 		<% else %>
-			<p style="font-weight:bolder;"> <%= store.name %> has no assigned addresses</p>
+			<p style="font-weight:bolder; color: red;"> <%= store.name %> has no assigned addresses</p>
 		<% end %>
-		<br/>
 		
+		<h3> Articles </h3>
+		<% if store.articles.size > 0 %>
+			<table>
+				<tr id="head">
+					<th>Name</th>
+				  <th>Price</th>
+				  <th></th>
+				</tr>
+				<% store.articles.each do |article|%>
+				<tr id="content">
+					<td> <%= article.name %></td>
+	    		<td> <%= number_to_currency article.price, :unit => "&euro;", :separator => "," %> </td>
+	    		<td> <%= button_to 'Delete assignment', delete_article_ref_path(:id => store,:article_id => article) , data: { confirm: 'Are you sure?' } %> </td>
+				</tr>
+				<% end %>
+			</table>
+		<% else %>
+			<p style="font-weight:bolder; color: red;"> <%= store.name %> has no assigned articles</p>
+		<% end %>
+		<br />		
 		<div style="display: table-cell;"><%= button_to 'Edit', edit_store_path(store), method: :get %></div>
 		<div style="display: table-cell;"><%= button_to 'Add Address', add_address_path(store)%></div>
 		<div style="display: table-cell;"><%= button_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure' }%></div>

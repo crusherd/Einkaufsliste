@@ -7,7 +7,12 @@
 	 	</tr>
 	 	<tr id="content">
 	 		<td><%= text_field_tag :amount, nil, :size => 1%></td>
-	 		<td><%= select_tag :article_id, options_from_collection_for_select(Article.all, :id, :name), :prompt => "Choose an Article" %></td>
+	 		<td>
+	 			<%= select_tag :article_id, 
+	 				options_for_select( Article.order("name ASC, price ASC").all.map { |a| [ a.name + ", " + number_to_currency(a.price, :unit => "€", :separator => ",") , a.id] }),
+	 				:prompt => "Choose an Article"
+				%>
+	 		</td>
 	 		<td><%= submit_tag "Add to List" %></td>
 	 	</tr>
  	</table>

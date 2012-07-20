@@ -1,20 +1,30 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Street:</b>
-  <%= @address.street %>
-</p>
 
-<p>
-  <b>Zipcode:</b>
-  <%= @address.zipcode %>
-</p>
+<table>
+	<tr id="head">
+		<th> Street: </th>
+		<th> Zipcode: </th>
+		<th> City: </th>
+		<th> Store(s)</th>
+	</tr>
+	<tr id="content">
+		<td> <%= @address.street %> </td>
+		<td> <%= @address.zipcode %></td>
+		<td> <%= @address.city %> </td>
+		<td>
+			<dl style="margin: 1px 18px;">
+			<% if @address.stores.any? %> 
+				<% @address.stores.each do |store| %>
+					<li> <%= store.name %> </li>
+				<% end %>
+			<% end %>
+			</dl> 
+	</tr>
+</table>
 
-<p>
-  <b>City:</b>
-  <%= @address.city %>
-</p>
+<br />
 
-
-<%= link_to 'Edit', edit_address_path(@address) %> |
-<%= link_to 'Back', addresses_path %>
+<div style="display: table-cell;"> <%= button_to 'Edit', edit_address_path(@address), method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Back', addresses_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

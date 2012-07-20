@@ -105,18 +105,27 @@ class StoresController < ApplicationController
     redirect_to new_address_ref_path(@current_store)
   end
     
-  def delete_address
+  def delete_address_ref
     @store = Store.find(params[:id])
     @address = Address.find(params[:address_id])
     
-    if !@address.nil?
-      @store.addresses.delete(@address)    
-    end
+    @store.addresses.delete(@address)    
     
     respond_to do |format|
       format.html { redirect_to stores_url }
       format.json { head :no_content }
     end
+  end
+  
+  def delete_article_ref
+    @store = Store.find(params[:id])
+    @article = Article.find(params[:article_id])
     
+    @store.articles.delete(@article)
+    
+    respond_to do |format|
+      format.html { redirect_to stores_url }
+      format.json { head :no_content }
+    end
   end
 end

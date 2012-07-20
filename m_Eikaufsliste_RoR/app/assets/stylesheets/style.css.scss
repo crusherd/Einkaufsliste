@@ -24,10 +24,12 @@ $lightgreen: #AAFFAA;
 
 #head {
   @include green_bg;
+  vertical-align: top;
   text-align: left; 
 }
 
 #content {
   @include lightgreen_bg;
+  vertical-align: middle;
   text-align: left;
 }

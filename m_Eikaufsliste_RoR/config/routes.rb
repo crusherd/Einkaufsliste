@@ -19,7 +19,9 @@ EinkaufslisteRor::Application.routes.draw do
   
   post "stores/add_address/:id" => "stores#add_address", as: "add_address"
   
-  post "stores/:id/delete_address/:address_id" => "stores#delete_address", as: "delete_address_store"
+  post "stores/:id/delete_address_ref/:address_id" => "stores#delete_address_ref", as: "delete_address_ref"
+  
+  post "stores/:id/delete_article_ref/:article_id" => "stores#delete_article_ref", as: "delete_article_ref"
  
   get "addresses/new_addres_ref/:store_id" => "addresses#new_address_ref", as: "new_address_ref"
  
@@ -28,7 +30,6 @@ EinkaufslisteRor::Application.routes.draw do
   post "addresses/add_address_ref/:store_id" => "addresses#add_address_ref", as: "add_address_ref"
  
   post "articles/:id/delete_store_ref/:store_id" => "articles#delete_store_ref", as: "delete_store_ref"
-  
   
   
   # The priority is based upon order of creation:

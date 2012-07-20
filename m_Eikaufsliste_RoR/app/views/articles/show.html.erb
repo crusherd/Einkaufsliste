@@ -1,14 +1,27 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @article.name %>
-</p>
+<table>
+	<tr id="head">
+		<th> Name: </th>
+		<th> Price: </th>
+		<th> Associated Store(s): </th>
+	</tr>
+	<tr id="content">
+		<td> <%= @article.name %> </td>
+		<td> <%= number_to_currency @article.price, :unit=>"&euro;", :separator => "," %></td>
+		<td>
+			<dl style="margin: 1px 18px;">
+			<% if @article.stores.any? %>
+				<% @article.stores.each do |store| %>
+					<li> <%= store.name %> </li>
+				<% end %>
+			<% end %>
+			</dl> 
+		</td>
+	</tr>
+</table>
 
-<p>
-  <b>Price:</b>
-  <%= number_to_currency @article.price, :unit=>"&euro;", :separator => "," %>
-</p>
+<br />
 
 <div style="display: table-cell;"> <%= button_to 'Edit', edit_article_path(@article), method: :get %> </div>
 <div style="display: table-cell;"> <%= button_to 'Back', articles_path, method: :get %> </div>

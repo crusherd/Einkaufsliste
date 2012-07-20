@@ -1,40 +1,39 @@
-<h1>Listing all articles</h1>
+<h1>Listing articles</h1>
 <hr />
 <hr />
 
 <% if @articles.empty? %>
   <h3 style="font-weight: bolder; color: red;">There are no articles created yet</h3>
 <% else %>
-<table>
-  <tr id="head" >
-    <th>Name</th>
-    <th>Price</th>
-    <th>Addresses</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @articles.each do |article| %>
-  <tr id="content">
-    <td> <%= article.name %></td>
-    <td> <%= number_to_currency article.price, :unit => "&euro;", :separator => "," %></td>
-    	<td> 
-    		<%= 
-    			if article.stores.count > 0 
-    				select_tag 'stores', options_from_collection_for_select(article.stores, :id, :name) 
-    			end	
-    		%> 
-    	</td>
-    <td> <%= button_to 'Show', article, method: :get %> </td>
-    <td> <%= button_to 'Edit', edit_article_path(article), method: :get %> </td>
-    <td> <%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
-  </tr>
+	<% @articles.each do |article|%>
+		<h2> <%= article.name %></h2>
+		<div style="display: table-cell; font-weight: bolder;">Price:&nbsp;</div>
+		<div style="display: table-cell;"> <%= number_to_currency article.price, :unit => "&euro;", :separator => "," %> </div>
+		
+		<h3> Stores: </h3>
+		<% if article.stores.size > 0 %>
+			<table>
+				<tr id="head">
+					<th> Name </th>
+					<th> </th>	
+				</tr>
+				<% article.stores.each do |store| %>
+					<tr id="content">
+						<td> <%= store.name %> </td>
+						<td> <%= button_to 'Delete assignment', delete_store_ref_path(:id => article, :store_id => store) , data: { confirm: 'Are you sure?' } %> </td>
+					</tr>	
+				<% end %>
+			</table>
+		<% else %>
+			<p style="font-weight:bolder; color: red;"> <%= article.name %> has no assigned addresses</p>
+		<% end %>
+		<br />
+		<div style="display: table-cell;"> <%= button_to 'Show', article, method: :get %> </div>
+    <div style="display: table-cell;"> <%= button_to 'Edit', edit_article_path(article), method: :get %> </div>
+    <div style="display: table-cell;"> <%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %> </div>		
+		<hr />
+	<% end %>
 <% end %>
-</table>
-<% end %>
 
-<br />
-
-<div style="display: table-cell;"> <%= button_to 'New Article', new_article_path, method: :get%> </div>
-<div style="display: table-cell;"> <%= button_to "Home", root_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'New Article', new_article_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>
