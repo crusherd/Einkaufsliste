@@ -8,6 +8,7 @@ import htwg.connection.HttpConnection.RequestType;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -34,17 +35,22 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
         setContentView(R.layout.choose_user);
         users = new ArrayList<User>();
         Bundle bundle = this.getIntent().getExtras();
-        connection = (HttpConnection)bundle.get("httpConnection");
+//        get HttpConnection for receiving json data
+        String ipAddress = (String) bundle.get("ipAddress");
+        connection = new HttpConnection(ipAddress);
         Log.i(UserListActivity.class.getName(), "Received: " + connection.getClass().getName());
         
-//        get Json Objects as String from Extras an put them to an ArrayList
-        for(int i = 1; i < bundle.size(); ++i) {
+//        get Json user objects as String from Extras an put them to an ArrayList
+        for(int i = 0; i < bundle.size(); ++i) {
         	try {
         		JSONObject object = new JSONObject(bundle.getString("json_users" + i));
         		users.add(new User(object.getInt(JsonNodeNames.TAG_ID), object.getString(JsonNodeNames.TAG_USERNAME)));
         		Log.i(UserListActivity.class.getName(), bundle.getString("json_users" + i));
-        	} catch (Exception e) {
+        	} catch (JSONException e) {
         		Log.i(UserListActivity.class.getName(), e.getMessage());
+        	} catch (Exception e) {
+//        		needed because bundle.getString() throws Exception with no message if key not found.
+//        		This causes in Log.i() a NPE.
         	}
         }
 
@@ -66,15 +72,30 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 //		get selected User
 		User user = (User) parent.getItemAtPosition(pos);
 		
-//		retrieve all shopping Lists from this user
+//		retrieve all shopping Lists
 		JSONArray allUserShoppingLists = connection.getJsonFromRequest(RequestType.SHOPPINGLISTS);
 		
 //		filter them
-		
-//		start Activity to show Shoppinglists from selected user
-		Intent intent = new Intent(this, ShoppingListsActivity.class);
-		intent.putExtra("user", user.getId());
-		startActivity(intent);
+		JSONArray filterdShoppingLists = new JSONArray();
+		try {
+			if(allUserShoppingLists != null) {
+				for(int i = 0; i < allUserShoppingLists.length(); ++i) {
+					JSONObject tmp = allUserShoppingLists.getJSONObject(i);
+					if(tmp.getInt(JsonNodeNames.TAG_ID) == user.getId())
+						filterdShoppingLists.put(allUserShoppingLists.getJSONObject(i));
+				}
+				
+//				start Activity to show Shoppinglists from selected user
+				Intent intent = new Intent(this, ShoppingListsActivity.class);
+				intent.putExtra("ipAddress", connection.getIpAddress());
+				intent.putExtra("user", user.getId());
+				for(int i = 0; i < filterdShoppingLists.length(); ++i)
+						intent.putExtra("json_shoppingLists" + i, filterdShoppingLists.getJSONObject(i).toString());
+				startActivity(intent);
+			}
+		} catch (Exception e) {
+			Log.i(UserListActivity.class.getName(), e.getMessage());
+		}
 	}
 
 //	callback which does nothing

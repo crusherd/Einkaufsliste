@@ -16,11 +16,10 @@ public final class R {
     public static final class id {
         public static final int ConnectButton=0x7f050006;
         public static final int IPTextField=0x7f050005;
-        public static final int LinearLayout1=0x7f050007;
         public static final int LinearLayout2=0x7f050000;
         public static final int MainLayout=0x7f050003;
         public static final int UserChooseSpinner=0x7f050002;
-        public static final int listView1=0x7f050008;
+        public static final int shoppingListsView=0x7f050007;
         public static final int starter_text=0x7f050004;
         public static final int textView1=0x7f050001;
     }

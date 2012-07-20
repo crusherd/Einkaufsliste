@@ -14,7 +14,6 @@ import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import android.app.Activity;
 import android.content.Context;
@@ -43,6 +42,8 @@ public class MainStarterActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+//        some gimmicks
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         
@@ -158,7 +159,7 @@ public class MainStarterActivity extends Activity {
     }
     
     private void startConnection(String ipAddress) {
-    	connection = new HttpConnection(ipAddress, this.getApplicationContext());
+    	connection = new HttpConnection(ipAddress);
 		JSONArray jsonArray = connection.getJsonFromRequest(RequestType.USERS);
 //    			connection successful and retrieved data
 		if(jsonArray != null) {
@@ -169,12 +170,12 @@ public class MainStarterActivity extends Activity {
     
     private void startUserSelection(JSONArray usernames) {
     	Intent intent = new Intent(this, UserListActivity.class);
-    	intent.putExtra("httpConnection", connection);
+    	intent.putExtra("ipAddress", connection.getIpAddress());
     	for(int i = 0; i < usernames.length(); ++i)
 			try {
 				intent.putExtra("json_users" + i, usernames.getJSONObject(i).toString());
-			} catch (JSONException e) {
-				Log.i(MainStarterActivity.class.getName(),e.getMessage());
+			} catch (Exception e) {
+				Log.i(MainStarterActivity.class.getName(), e.getMessage());
 			}
     	startActivity(intent);
     }

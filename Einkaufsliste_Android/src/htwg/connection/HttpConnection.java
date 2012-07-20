@@ -10,7 +10,6 @@ import java.net.URL;
 
 import org.json.JSONArray;
 
-import android.content.Context;
 import android.util.Log;
 
 public class HttpConnection implements Serializable{
@@ -31,14 +30,10 @@ public class HttpConnection implements Serializable{
 		ARTICLES
 	}
 	
-	public HttpConnection(String ipAddress, Context context) {
+	public HttpConnection(String ipAddress) {
 		if(ipAddress.equals("") || ipAddress == null) {
 			Log.e("HttpConnection Create", "no IP-Address");
 			throw new RuntimeException("no IP-Address");
-		}
-		if(context == null) {
-			Log.e("HttpConnection Create", "no context given");
-			throw new RuntimeException("no context given");
 		}
 		this.ipAddress = ipAddress;
 	}
@@ -97,6 +92,10 @@ public class HttpConnection implements Serializable{
 				Log.e(HttpConnection.class.getSimpleName(), e.getMessage());
 			}
 			return jsonArray;
+	}
+	
+	public String getIpAddress() {
+		return ipAddress;
 	}
 	
 }
