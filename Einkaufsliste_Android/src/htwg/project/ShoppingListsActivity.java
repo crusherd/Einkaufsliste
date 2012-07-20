@@ -2,7 +2,6 @@ package htwg.project;
 
 import htwg.backend.JsonNodeNames;
 import htwg.backend.Shoppinglist;
-import htwg.backend.User;
 import htwg.connection.HttpConnection;
 import htwg.connection.HttpConnection.RequestType;
 
@@ -49,7 +48,7 @@ public class ShoppingListsActivity extends Activity implements OnItemSelectedLis
       		JSONObject object = new JSONObject(bundle.getString("json_shoppingLists" + i));
       		shoppingLists.add(new Shoppinglist(object.getInt(JsonNodeNames.TAG_ID), 
       				object.getInt(JsonNodeNames.TAG_USER_ID), 
-      				object.getString(JsonNodeNames.TAG_SHOPPINGLIST_NAME)));
+      				object.getString(JsonNodeNames.TAG_NAME)));
       		Log.i(UserListActivity.class.getName(), bundle.getString("json_shoppingLists" + i));
       	} catch (JSONException e) {
       		Log.i(UserListActivity.class.getName(), e.getMessage());
@@ -59,6 +58,7 @@ public class ShoppingListsActivity extends Activity implements OnItemSelectedLis
     	}
       }
       
+//      add shoppingLists to listView
       ListView listView = (ListView) findViewById(R.id.shoppingListsView);
       ArrayAdapter<Shoppinglist> arrayAdapter = new ArrayAdapter<Shoppinglist>(this, android.R.layout.simple_list_item_1, shoppingLists);
       listView.setAdapter(arrayAdapter);
@@ -74,7 +74,7 @@ public class ShoppingListsActivity extends Activity implements OnItemSelectedLis
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
 //		get selected shoppingList
-		Shoppinglist user = (Shoppinglist) parent.getItemAtPosition(pos);
+		Shoppinglist shoppingList = (Shoppinglist) parent.getItemAtPosition(pos);
 		
 //		retrieve all articles
 		JSONArray allArticles = connection.getJsonFromRequest(RequestType.ARTICLES);
@@ -85,14 +85,14 @@ public class ShoppingListsActivity extends Activity implements OnItemSelectedLis
 			if(allArticles != null) {
 				for(int i = 0; i < allArticles.length(); ++i) {
 					JSONObject tmp = allArticles.getJSONObject(i);
-					if(tmp.getInt(JsonNodeNames.TAG_ID) == user.getId())
+					if(tmp.getInt(JsonNodeNames.TAG_SHOPPING_LIST_ID) == shoppingList.getId())
 						filterdArticles.put(allArticles.getJSONObject(i));
 				}
 				
 //				start Activity to show Shoppinglists from selected user
 				Intent intent = new Intent(this, ShoppingListsActivity.class);
 				intent.putExtra("ipAddress", connection.getIpAddress());
-				intent.putExtra("user", user.getId());
+				intent.putExtra("user", shoppingList.getId());
 				for(int i = 0; i < filterdArticles.length(); ++i)
 						intent.putExtra("json_articles" + i, filterdArticles.getJSONObject(i).toString());
 				startActivity(intent);

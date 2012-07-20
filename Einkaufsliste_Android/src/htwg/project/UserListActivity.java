@@ -81,7 +81,7 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 			if(allUserShoppingLists != null) {
 				for(int i = 0; i < allUserShoppingLists.length(); ++i) {
 					JSONObject tmp = allUserShoppingLists.getJSONObject(i);
-					if(tmp.getInt(JsonNodeNames.TAG_ID) == user.getId())
+					if(tmp.getInt(JsonNodeNames.TAG_USER_ID) == user.getId())
 						filterdShoppingLists.put(allUserShoppingLists.getJSONObject(i));
 				}
 				
