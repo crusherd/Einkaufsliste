@@ -26,6 +26,8 @@ EinkaufslisteRor::Application.routes.draw do
   post "addresses/create_address_ref/:store_id" => "addresses#create_address_ref", as: "create_address_ref"
   
   post "addresses/add_address_ref/:store_id" => "addresses#add_address_ref", as: "add_address_ref"
+ 
+  post "articles/:id/delete_store_ref/:store_id" => "articles#delete_store_ref", as: "delete_store_ref"
   
   
   

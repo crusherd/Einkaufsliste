@@ -9,6 +9,7 @@
   <tr id="head" >
     <th>Name</th>
     <th>Price</th>
+    <th>Addresses</th>
     <th></th>
     <th></th>
     <th></th>
@@ -16,11 +17,18 @@
 
 <% @articles.each do |article| %>
   <tr id="content">
-    <td><%= article.name %></td>
-    <td><%= number_to_currency article.price, :unit => "&euro;", :separator => "," %></td>
-    <td><%= button_to 'Show', article, method: :get %></td>
-    <td><%= button_to 'Edit', edit_article_path(article), method: :get %></td>
-    <td><%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td> <%= article.name %></td>
+    <td> <%= number_to_currency article.price, :unit => "&euro;", :separator => "," %></td>
+    	<td> 
+    		<%= 
+    			if article.stores.count > 0 
+    				select_tag 'stores', options_from_collection_for_select(article.stores, :id, :name) 
+    			end	
+    		%> 
+    	</td>
+    <td> <%= button_to 'Show', article, method: :get %> </td>
+    <td> <%= button_to 'Edit', edit_article_path(article), method: :get %> </td>
+    <td> <%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
   </tr>
 <% end %>
 </table>

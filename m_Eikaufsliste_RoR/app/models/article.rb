@@ -4,11 +4,11 @@ class Article < ActiveRecord::Base
   
   # validation
   validates :name, :presence => true, :allow_nil => false, :allow_blank => false
-  validates :price, :presence => true, :allow_nil => false, :allow_blank => false, :numericality => { :greater_than => 0 }
   # uniqueness of touple price and name
   validates :name, :uniqueness => {:scope => :price}
   
   # references
   has_many :listings, :dependent => :destroy
   has_many :shoppinglists, :through => :listings
+  has_and_belongs_to_many :stores
 end

@@ -81,8 +81,6 @@ class UsersController < ApplicationController
     end
   end
   
-  # SELECT /users/1
-  # SELECT /users/1.json
   def select
     @user = User.find(params[:id])
     session[:user_id] = @user.id

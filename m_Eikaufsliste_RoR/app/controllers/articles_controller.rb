@@ -41,9 +41,18 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = Article.new(params[:article])
-
+    if !params[:stores].nil?
+      # prevent assignment of empty element to stores reference
+      params[:stores].delete_if { |x| x == ""}
+    end
+    
     respond_to do |format|
-      if @article.save
+      if @article.save && !params[:stores].nil?
+          @stores = Store.find(params[:stores])
+          @stores.each { |s|
+            @article.stores << s
+          }
+        
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
       else
@@ -57,6 +66,19 @@ class ArticlesController < ApplicationController
   # PUT /articles/1.json
   def update
     @article = Article.find(params[:id])
+    
+    if !params[:stores].nil?
+      # prevent assignment of empty element to stores reference
+      params[:stores].delete_if { |x| x == ""}
+    end
+    
+    if !params[:stores].nil?
+      @stores = Store.find(params[:stores])
+      @stores.each { |s|
+        @article.stores.delete(s) # prohibit duplicate references to store
+        @article.stores << s
+      }
+    end
     
     respond_to do |format|
       if @article.update_attributes(params[:article])
@@ -77,6 +99,18 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to articles_url }
+      format.json { head :no_content }
+    end
+  end
+  
+  def delete_store_ref
+    @article = Article.find(params[:id])
+    @store = Store.find(params[:store_id])
+    
+    @article.stores.delete(@store)
+    
+    respond_to do |format|
+      format.html { redirect_to @article }
       format.json { head :no_content }
     end
   end
