@@ -27,5 +27,9 @@
             android:name="UserListActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="ShoppingListsActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 </manifest>

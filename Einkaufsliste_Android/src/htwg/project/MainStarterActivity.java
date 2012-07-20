@@ -169,6 +169,7 @@ public class MainStarterActivity extends Activity {
     
     private void startUserSelection(JSONArray usernames) {
     	Intent intent = new Intent(this, UserListActivity.class);
+    	intent.putExtra("httpConnection", connection);
     	for(int i = 0; i < usernames.length(); ++i)
 			try {
 				intent.putExtra("json_users" + i, usernames.getJSONObject(i).toString());

@@ -2,12 +2,16 @@ package htwg.project;
 
 import htwg.backend.JsonNodeNames;
 import htwg.backend.User;
+import htwg.connection.HttpConnection;
+import htwg.connection.HttpConnection.RequestType;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.Spinner;
 public class UserListActivity extends Activity implements OnItemSelectedListener{
 
 	private ArrayList<User>users = null;
+	private HttpConnection connection = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,20 +34,25 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
         setContentView(R.layout.choose_user);
         users = new ArrayList<User>();
         Bundle bundle = this.getIntent().getExtras();
-        for(int i = 0; i < bundle.size(); ++i) {
+        connection = (HttpConnection)bundle.get("httpConnection");
+        Log.i(UserListActivity.class.getName(), "Received: " + connection.getClass().getName());
+        
+//        get Json Objects as String from Extras an put them to an ArrayList
+        for(int i = 1; i < bundle.size(); ++i) {
         	try {
         		JSONObject object = new JSONObject(bundle.getString("json_users" + i));
         		users.add(new User(object.getInt(JsonNodeNames.TAG_ID), object.getString(JsonNodeNames.TAG_USERNAME)));
-        		Log.i("test", bundle.getString("json_users" + i));
+        		Log.i(UserListActivity.class.getName(), bundle.getString("json_users" + i));
         	} catch (Exception e) {
         		Log.i(UserListActivity.class.getName(), e.getMessage());
         	}
         }
-        
+
+//        make chooseable users visible in a spinner
         Spinner spinner = (Spinner) findViewById(R.id.UserChooseSpinner);
-        
-        ArrayAdapter<User> spinnerAdapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, users);
+        ArrayAdapter<User> spinnerAdapter = new ArrayAdapter<User>(this, android.R.layout.simple_dropdown_item_1line, users);
         spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
 	}
 
 	
@@ -51,16 +61,24 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 		super.onPause();
 	}
 
-
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
-		// TODO Auto-generated method stub
+//	react on item selection
+	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//		get selected User
+		User user = (User) parent.getItemAtPosition(pos);
 		
+//		retrieve all shopping Lists from this user
+		JSONArray allUserShoppingLists = connection.getJsonFromRequest(RequestType.SHOPPINGLISTS);
+		
+//		filter them
+		
+//		start Activity to show Shoppinglists from selected user
+		Intent intent = new Intent(this, ShoppingListsActivity.class);
+		intent.putExtra("user", user.getId());
+		startActivity(intent);
 	}
 
-
+//	callback which does nothing
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
 		
 	}
 	

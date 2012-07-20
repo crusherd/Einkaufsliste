@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -12,7 +13,9 @@ import org.json.JSONArray;
 import android.content.Context;
 import android.util.Log;
 
-public class HttpConnection {
+public class HttpConnection implements Serializable{
+	
+	private static final long serialVersionUID = -8584137779048953802L;
 
 	private static final int PORT = 3000;
 	
