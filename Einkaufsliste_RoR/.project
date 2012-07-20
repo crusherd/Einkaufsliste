@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>m_Einkaufsliste_RoR</name>
+	<name>Einkaufsliste_RoR</name>
 	<comment></comment>
 	<projects>
+		<project>Einkaufsliste_Android</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -14,5 +15,6 @@
 	<natures>
 		<nature>org.radrails.rails.core.railsnature</nature>
 		<nature>com.aptana.ruby.core.rubynature</nature>
+		<nature>com.aptana.projects.webnature</nature>
 	</natures>
 </projectDescription>
