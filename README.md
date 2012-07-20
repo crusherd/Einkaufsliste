@@ -23,9 +23,6 @@ android.permission.ACCESS_NETWORK_STATE
 Anforderungen für die Datenbank
 ===============================
 ruby Version 1.9.3
-
 rails Version 3.2.6
-
 rake Version 0.9.2.2
-
 gem Version 1.8.23
