@@ -2,37 +2,39 @@
 <hr />
 <hr />
 
-<% @stores.each do |store| %>
-	<h2> <%= store.name %> </h2>
-	<% if store.addresses.size > 0 %>
-		<table>
-			<tr id="head">
-				<th> Street </th>
-				<th> Zipcode </th>
-				<th> City </th>
-				<th> </th>		
-			</tr>
-			<% store.addresses.each do |address| %>
-				<tr id="content">
-					<td> <%= address.street %> </td>
-					<td> <%= address.zipcode %> </td>
-					<td> <%= address.city %> </td>
-					<td> <%= button_to 'Delete assignment', delete_address_store_path(:id => store,:address_id => address) , data: { confirm: 'Are you sure?' } %> </td>
-				</tr>	
-			<% end %>
-		</table>
-	<% else %>
-		<p style="font-weight:bolder;"> <%= store.name %> has no assigned addresses</p>
+<% if @stores.count > 0 %>
+	<% @stores.each do |store| %>
+		<h2> <%= store.name %> </h2>
+		<% if store.addresses.size > 0 %>
+			<table>
+				<tr id="head">
+					<th> Street </th>
+					<th> Zipcode </th>
+					<th> City </th>
+					<th> </th>		
+				</tr>
+				<% store.addresses.each do |address| %>
+					<tr id="content">
+						<td> <%= address.street %> </td>
+						<td> <%= address.zipcode %> </td>
+						<td> <%= address.city %> </td>
+						<td> <%= button_to 'Delete assignment', delete_address_store_path(:id => store,:address_id => address) , data: { confirm: 'Are you sure?' } %> </td>
+					</tr>	
+				<% end %>
+			</table>
+		<% else %>
+			<p style="font-weight:bolder;"> <%= store.name %> has no assigned addresses</p>
+		<% end %>
+		<br/>
+		
+		<div style="display: table-cell;"><%= button_to 'Edit', edit_store_path(store), method: :get %></div>
+		<div style="display: table-cell;"><%= button_to 'Add Address', add_address_path(store)%></div>
+		<div style="display: table-cell;"><%= button_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure' }%></div>
+		<hr/>
 	<% end %>
-	<br/>
-	
-	<div style="display: table-cell;"><%= button_to 'Edit', edit_store_path(store), :method => :get %></div>
-	<div style="display: table-cell;"><%= button_to 'Add Address', add_address_path(store)%></div>
-	<div style="display: table-cell;"><%= button_to 'Delete', store, method: :delete, data: { confirm: 'Are you sure' }%></div>
-	<hr/>
+<% else %>
+	<h3 style="font-weight: bolder; color: red;"> No stores are created yet </h3>
 <% end %>
 
-
-<br />
-
-<%= button_to 'New Store', new_store_path, :method => :get %>
+<div style="display: table-cell;"> <%= button_to 'New Store', new_store_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

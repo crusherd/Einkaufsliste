@@ -2,5 +2,12 @@
 
 <p><%= @local_ip %></p>
 
+<hr />
+<hr />
 
-<%= link_to 'Show all Users', users_path %>
+<div style="display: table-cell;"> <%= button_to 'Show all Users', users_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Show all Shoppinglists', shoppinglists_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Shoppinglists with articles', listings_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Show all Articles', articles_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Show all Stores', stores_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Show all Addresses', addresses_path, method: :get %> </div>

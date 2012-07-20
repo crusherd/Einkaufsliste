@@ -1,5 +1,18 @@
 <h1>Editing store</h1>
 
+<%= form_for(@store) do |f| %>
+	<table class="myTable" >
+	  <tr id="head" >
+	  	<th> <%= f.label :name %> </th>
+	  	<th></th>
+		</tr>	
+		<tr id="content" >
+			<td> <%= f.text_field :name %> </td>
+			<td> <%= f.submit %> </td>
+		</tr>
+	</table>
+<% end %>
+
 
 <%= link_to 'Show', @store %> |
 <%= link_to 'Back', stores_path %>
