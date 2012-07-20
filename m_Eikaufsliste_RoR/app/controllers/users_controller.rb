@@ -2,8 +2,6 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    session[:user_id] = nil
-    session[:shoppinglist_id] = nil
     @users = User.all
 
     respond_to do |format|

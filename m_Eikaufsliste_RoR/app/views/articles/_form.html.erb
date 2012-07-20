@@ -11,15 +11,16 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :price %><br />
-    <%= f.text_field :price %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+	<table class="myTable">
+		<tr id="head">
+			<th> <%= f.label :name %> </th>
+			<th> <%= f.label :price %> </th>
+			<th></th>
+		</tr>
+		<tr id="content">
+			<td> <%= f.text_field :name %> </td>
+			<td> <%= f.text_field :price, :size => 6 %> </td>
+			<td> <%= f.submit %> </td>
+		</tr>
+	</table>
 <% end %>

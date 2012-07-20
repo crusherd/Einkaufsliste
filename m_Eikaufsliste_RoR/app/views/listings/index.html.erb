@@ -1,61 +1,71 @@
 <% if !@current_list.nil? %>
 	<h1> Articles of "<%= @current_list.name %>"</h1>
-	<table>
-  		<tr>
-			<th>Amount</th>
-			<th>Article</th>
-			<th>Price</th>
-			<th></th>
-			<th></th>
-			<th></th>
-		</tr>
-	  	<% @articles = @current_list.articles.group(:id) %>
-		<% @articles.each do |entry| %>
-			<% @list = Listing.where(:article_id => entry.id, :shoppinglist_id => @current_list.id).all %>
-			<% @list.each do |listentry| %>
-				<tr>
-					<td><%= listentry.amount %></td>
-					<td><%= entry.name %> </td>
-					<td><%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
-					<td><%= link_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-				</tr>
+	<hr />
+	<hr />
+	
+	<% if @current_list.articles.count < 1 %>
+		<p style="font-weight: bolder; color: red;">The Shoppinglist "<%= @current_list.name %>" has no articles yet!!</p>
+	<% else %>
+		<table>
+	  		<tr id="head">
+				<th>Amount</th>
+				<th>Article</th>
+				<th>Price</th>
+				<th></th>
+			</tr>
+			<% @articles = @current_list.articles.group(:id) %>
+			<% @articles.each do |entry| %>
+				<% @list = Listing.where(:article_id => entry.id, :shoppinglist_id => @current_list.id).all %>
+				<% @list.each do |listentry| %>
+					<tr id="content">
+						<td><%= listentry.amount %></td>
+						<td><%= entry.name %> </td>
+						<td><%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
+						<td><%= button_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+					</tr>
+				<% end %>
 			<% end %>
-		<% end %>
-	</table>
-	<br />
+		</table>
+		<br />
+	<% end %>
 	
 	<%= render 'form' %>
 	<br />
 	
-	<%= link_to 'Back to Shoppinglist', shoppinglists_path %> <br/>
+	<div style="display: table-cell;"> <%= button_to 'Back to Shoppinglist', shoppinglists_path, method: :get%> </div>
 <% else %>
-	<% Listing.select(:shoppinglist_id).order("shoppinglist_id ASC").group(:shoppinglist_id).each do |list_entry| %>
-		<% @current_list = Shoppinglist.find_by_id(list_entry.shoppinglist_id)%>
-		<%if !@current_list.articles.nil? %>
-			<h3> Articles of "<%= @current_list.name %>" </h3>
-			  <table>
-			  <tr>
-			    <th>Amount</th>
-			    <th>Article</th>
-			    <th>Price</th>
-			    <th></th>
-			    <th></th>
-			    <th></th>
-			  </tr>
-			  	<% @articles = @current_list.articles %>
+	<% @list_entries = Listing.select(:shoppinglist_id).order("shoppinglist_id ASC").group(:shoppinglist_id) %>
+	<% if @list_entries.exists? %>
+		<% @list_entries.each do |list_entry| %>
+			<% @current_list = Shoppinglist.find_by_id(list_entry.shoppinglist_id)%>
+			<%if @current_list.articles.count > 0 %>
+				<% @articles = @current_list.articles %>
+				<h3> Articles of "<%= @current_list.name %>" </h3>
+				  <table>
+				  <tr id="head">
+				    <th>Amount</th>
+				    <th>Article</th>
+				    <th>Price</th>
+				    <th></th>
+				  </tr>
 				<% @articles.each do |entry| %>
 					<% @list = Listing.find_by_article_id_and_shoppinglist_id(entry.id,@current_list.id) %>
-				<tr>
-				    <td><%= @list.amount %></td>
-				    <td><%= entry.name %> </td>
-				    <td><%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
-				    <td><%= link_to 'Delete entry', @list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-				</tr>
+					<tr id="content">
+					    <td><%= @list.amount %></td>
+					    <td><%= entry.name %> </td>
+					    <td><%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
+					    <td><%= button_to 'Delete entry', @list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+					</tr>
 				<% end %>
-			</table>
-			<hr />
+				</table>
+				<hr />
+			<% else %>
+				<p style="font-weight: bolder; color: red;">The Shoppinglist "<%= @current_list.name %>" has no articles yet!!</p>
+			<% end %>
 		<% end %>
+	<% else %>
+		<h3 style="font-weight: bolder; color: red;"> No articles are listet in any shoppinglist </h3>
 	<% end %>
 <% end %>
 
-<%= link_to 'Show Users', users_path %>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %></div>

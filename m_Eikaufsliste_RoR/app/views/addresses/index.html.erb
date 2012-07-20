@@ -1,26 +1,35 @@
 <h1>Listing addresses</h1>
 
-<table>
-  <tr>
-    <th>Street</th>
-    <th>Zipcode</th>
-    <th>City</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<hr />
+<hr />
 
-<% @addresses.each do |address| %>
-  <tr>
-    <td><%= address.street %></td>
-    <td><%= address.zipcode %></td>
-    <td><%= address.city %></td>
-    <td><%= link_to 'Show', address %></td>
-    <td><%= link_to 'Edit', edit_address_path(address) %></td>
-    <td><%= link_to 'Destroy', address, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+<% if @addresses.count > 0 %>
+	<table>
+	  <tr id="head">
+	    <th>Street</th>
+	    <th>Zipcode</th>
+	    <th>City</th>
+	    <th></th>
+	    <th></th>
+	    <th></th>
+	  </tr>
+	
+	<% @addresses.each do |address| %>
+	  <tr id="content">
+	    <td><%= address.street %></td>
+	    <td><%= address.zipcode %></td>
+	    <td><%= address.city %></td>
+	    <td><%= button_to 'Show', address, :method => :get %></td>
+	    <td><%= button_to 'Edit', edit_address_path(address), :method => :get %></td>
+	    <td><%= button_to 'Destroy', address, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+	  </tr>
+	<% end %>
+	</table>
+	<br/>
+<% else %>
+	<h3 style="font-weight: bolder; color: red;">There are no addresses created yet</h3>
 <% end %>
-</table>
-<br/>
 
-<%= button_to 'New Address', new_address_path, :method => :get%>
+
+<div style="display: table-cell;"> <%= button_to 'New Address', new_address_path, :method => :get%> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, :method => :get%> </div>

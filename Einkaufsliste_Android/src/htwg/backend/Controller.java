@@ -18,6 +18,9 @@ public class Controller {
 	public List<User> createUsers() {
 		return null;
 	}
-	
+		
+	private void foo(String filename) {
+		
+	}
 	
 }

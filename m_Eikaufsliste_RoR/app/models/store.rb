@@ -1,6 +1,6 @@
 class Store < ActiveRecord::Base
   # accessible attributes
-  attr_accessible :name
+  attr_accessible :name, :addresses
   
   # validation
   validates :name, :presence => true, :allow_nil => false, :allow_blank => false

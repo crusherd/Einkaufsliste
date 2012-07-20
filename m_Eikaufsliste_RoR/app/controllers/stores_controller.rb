@@ -6,7 +6,7 @@ class StoresController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @stores }
+      format.json { render json: @stores, :include => :addresses }
     end
   end
 
