@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">Einkaufsliste_Android</string>
     <string name="starter_user_txt">Choose your username:</string>
+    <string name="enter_ip">Please enter IP for server:</string>
+    <string name="example_ip">Example: 192.168.2.110</string>
+    <string name="toast_not_an_ip">Input is not an IP</string>
+    <string name="connectButtonText">Connect</string>
+    <string name="wifi_is_off">Wifi is off</string>
 </resources>

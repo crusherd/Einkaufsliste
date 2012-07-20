@@ -5,16 +5,18 @@ import java.util.List;
 import org.json.JSONArray;
 
 import htwg.backend.User;
+import htwg.connection.HttpConnection;
 
 public class Controller {
 	private List<User> users;
+	private HttpConnection connection = null;
 	
-	public List<User> createUsers() {
-		
+	public Controller(HttpConnection connection) {
+		this.connection = connection;
 	}
 	
-	private (String filename) {
-		
+	public List<User> createUsers() {
+		return null;
 	}
 	
 	
