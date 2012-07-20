@@ -2,4 +2,10 @@
 <resources>
     <string name="app_name">Einkaufsliste_Android</string>
     <string name="starter_user_txt">Wähle deinen Benutzernamen:</string>
+    <string name="enter_ip">Bitte IP für den Server eingeben:</string>
+    <string name="example_ip">Beispiel: 192.168.2.110</string>
+    <string name="toast_not_an_ip">Eingabe ist keine IP</string>
+    <string name="connectButtonText">Verbinden</string>
+    <string name="wifi_is_off">Wifi ist aus</string>
+    <string name="host_not_reachable">Host ist nicht erreichbar</string>
 </resources>

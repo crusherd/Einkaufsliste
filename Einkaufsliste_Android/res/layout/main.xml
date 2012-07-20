@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MainLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:layout_gravity="center_vertical|center_horizontal" android:gravity="center_vertical|fill_horizontal|clip_vertical">
-
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:gravity="center_vertical|fill_horizontal|clip_vertical"
+    android:keepScreenOn="true"
+    android:orientation="vertical" >
     <TextView
         android:id="@+id/starter_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="@string/starter_user_txt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/enter_ip"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Spinner
-        android:id="@+id/starter_sp_user"
+    <EditText
+        android:id="@+id/IPTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0" android:clickable="true"/>
-
-</LinearLayout>
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/starter_text"
+        android:ems="10"
+        android:hint="@string/example_ip"
+        android:inputType="number|textUri" >
+        <requestFocus />
+    </EditText>
+    <Button
+        android:id="@+id/ConnectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/IPTextField"
+        android:layout_centerHorizontal="true"
+        android:onClick="connect"
+        android:text="@string/connectButtonText" />
+</RelativeLayout>
