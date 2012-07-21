@@ -8,4 +8,8 @@
     <string name="connectButtonText">Connect</string>
     <string name="wifi_is_off">Wifi is off</string>
     <string name="host_not_reachable">Host is not reachable</string>
+    <string name="syncronize_button_text">Synchronize</string>
+    <string name="spinner_choose_user">User</string>
+    <string name="toast_no_user_found">No user received</string>
+    <string name="toast_sync_aborted">Sync aborted due to error</string>
 </resources>

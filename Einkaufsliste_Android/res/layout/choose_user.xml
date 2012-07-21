@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout2"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:gravity="center_vertical|fill_horizontal|clip_vertical"
+    android:gravity="fill_horizontal"
     android:orientation="vertical"
     tools:context=".UserListActivity" >
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="synchronize"
+        android:text="@string/syncronize_button_text" />
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:gravity="center"
         android:text="@string/starter_user_txt"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <Spinner
         android:id="@+id/UserChooseSpinner"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </Spinner>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:prompt="@string/spinner_choose_user"
+        tools:listitem="@android:layout/simple_spinner_item" />
+</RelativeLayout>

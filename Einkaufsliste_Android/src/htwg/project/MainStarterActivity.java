@@ -31,9 +31,8 @@ public class MainStarterActivity extends Activity {
 	
 	private View view = null;
 	private HttpConnection connection = null;
-	private boolean wifiOn = false;
-	private String filename = "ipAddress";
-	private static String IP_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+	private final String filename = "ipAddress";
+	private static final String IPV4_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
@@ -52,16 +51,16 @@ public class MainStarterActivity extends Activity {
         view.setKeepScreenOn(true);
         
 //        check if wifi is on
-        wifiOn = checkWifi();
-        
+        if(isWifiOn()) {
 //        if file is present we use this
-        if(fileIsPresent()) {
-			String ipText = readFromFile();
-			if(!ipText.equals("")) {
-				if(pingHost(ipText))
-					startConnection(ipText);
+        	if(fileIsPresent()) {
+				String ipText = readFromFile();
+				if(!ipText.equals("")) {
+					if(pingHost(ipText))
+						startConnection(ipText);
+				}
 			}
-		}
+        }
     }
     
     /** Called when the activity is paused or shutdowned */
@@ -70,7 +69,7 @@ public class MainStarterActivity extends Activity {
     	super.onPause();
     }
     
-    private boolean checkWifi() {
+    private boolean isWifiOn() {
     	ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     	NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
     	if(wifi.isConnected())
@@ -83,9 +82,9 @@ public class MainStarterActivity extends Activity {
      * @param view
      */
     public void connect(View view) {
-    	if(wifiOn) {
+    	if(isWifiOn()) {
     		String ipText = ((TextView) findViewById(R.id.IPTextField)).getText().toString();
-    		Pattern pattern = Pattern.compile(IP_PATTERN);
+    		Pattern pattern = Pattern.compile(IPV4_PATTERN);
     		Log.i("TextView Input", ipText);
     		if(!ipText.matches(pattern.pattern())){
     			Toast.makeText(this, R.string.toast_not_an_ip, Toast.LENGTH_SHORT).show();
@@ -171,12 +170,6 @@ public class MainStarterActivity extends Activity {
     private void startUserSelection(JSONArray usernames) {
     	Intent intent = new Intent(this, UserListActivity.class);
     	intent.putExtra("ipAddress", connection.getIpAddress());
-    	for(int i = 0; i < usernames.length(); ++i)
-			try {
-				intent.putExtra("json_users" + i, usernames.getJSONObject(i).toString());
-			} catch (Exception e) {
-				Log.i(MainStarterActivity.class.getName(), e.getMessage());
-			}
     	startActivity(intent);
     }
 }
