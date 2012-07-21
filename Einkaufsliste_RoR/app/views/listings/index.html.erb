@@ -12,16 +12,18 @@
 				<th>Article</th>
 				<th>Price</th>
 				<th></th>
+				<th></th>
 			</tr>
-			<% @articles = @current_list.articles.group(:id) %>
+			<% @articles = @current_list.articles %>
 			<% @articles.each do |entry| %>
 				<% @list = Listing.where(:article_id => entry.id, :shoppinglist_id => @current_list.id).all %>
 				<% @list.each do |listentry| %>
 					<tr id="content">
-						<td><%= listentry.amount %></td>
-						<td><%= entry.name %> </td>
-						<td><%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
-						<td><%= button_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+						<td> <%= listentry.amount %></td>
+						<td> <%= entry.name %> </td>
+						<td> <%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
+						<td> <%= button_to 'Edit', edit_article_path(entry), method: :get %> </td>
+						<td> <%= button_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
 					</tr>
 				<% end %>
 			<% end %>
@@ -32,7 +34,6 @@
 	<%= render 'form' %>
 	<br />
 	
-	<div style="display: table-cell;"> <%= button_to 'Back to Shoppinglist', shoppinglists_path, method: :get%> </div>
 <% else %>
 	<% @list_entries = Listing.select(:shoppinglist_id).order("shoppinglist_id ASC").group(:shoppinglist_id) %>
 	<% if @list_entries.exists? %>
@@ -68,4 +69,5 @@
 	<% end %>
 <% end %>
 
+<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
 <div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %></div>

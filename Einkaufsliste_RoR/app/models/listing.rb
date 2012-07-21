@@ -4,7 +4,8 @@ class Listing < ActiveRecord::Base
   
   # validation
   validates :amount, :presence => true, :allow_nil => false, :allow_blank => false
-  
+  validates_numericality_of :amount, :greater_than => 0
+
   # references
   belongs_to :shoppinglist
   belongs_to :article

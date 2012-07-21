@@ -49,8 +49,5 @@
 <% end %>
 
 <div style="display: table-cell;"> <%= button_to 'New Shoppinglist', new_shoppinglist_path, method: :get %> </div>
-<% if @current_user.nil? %>
-	<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>
-<% else %>
-	<div style="display: table-cell;"> <%= button_to 'Show Users', users_path, method: :get %> </div>
-<% end %>
+<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

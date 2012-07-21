@@ -18,9 +18,11 @@
 <% end %>
 
 <h1>New store</h1>
-
-<%= render 'form' %>
-
+<hr/>
 <hr/>
 
-<%= button_to 'Back', stores_path, method: :get %>
+<%= render 'form' %>
+<hr />
+
+<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

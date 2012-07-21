@@ -2,9 +2,6 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @shoppinglist %> 
-<%= link_to 'Back', shoppinglists_path %>
-
-
-
-
+<div style="display: table-cell;"> <%= button_to 'Show', @shoppinglist, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Back', shoppinglists_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

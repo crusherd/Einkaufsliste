@@ -10,17 +10,6 @@ class StoresController < ApplicationController
     end
   end
 
-  # GET /stores/1
-  # GET /stores/1.json
-  def show
-    @store = Store.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @store }
-    end
-  end
-
   # GET /stores/new
   # GET /stores/new.json
   def new

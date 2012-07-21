@@ -12,7 +12,8 @@
 		</tr>
 	</table>
 <% end %>
+<br />
 
-
-<%= link_to 'Show', @store %> |
-<%= link_to 'Back', stores_path %>
+<div style="display: table-cell;"> <%= button_to 'Show', @store, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

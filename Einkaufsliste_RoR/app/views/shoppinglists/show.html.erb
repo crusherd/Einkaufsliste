@@ -1,20 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @shoppinglist.name %>
-</p>
-
-<p>
-  <b>Creationdate:</b>
-  <%= @shoppinglist.creationDate %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @shoppinglist.user_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_shoppinglist_path(@shoppinglist) %> |
-<%= link_to 'Back', shoppinglists_path %>
+<table>
+	<tr id="head">
+		<th>Name: </th>
+		<th>Creationdate: </th>
+		<th>User: </th>
+	</tr>
+	<tr id="content">
+		<td> <%= @shoppinglist.name %> </td>
+		<td> <%= @shoppinglist.creationDate %> </td>
+		<td> <%= @shoppinglist.user_id %> </td>
+	</tr>
+</table>
+<br />
+<div style="display: table-cell;"> <%= button_to 'Edit', edit_shoppinglist_path(@shoppinglist), method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get%> </div>

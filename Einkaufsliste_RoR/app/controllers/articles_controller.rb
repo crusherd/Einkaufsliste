@@ -2,7 +2,7 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+    @articles = Article.order("name ASC, price ASC").all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,12 +46,19 @@ class ArticlesController < ApplicationController
       params[:stores].delete_if { |x| x == ""}
     end
     
+    if @article.price.nil?
+      # user don't know the price of the article yet
+      @article.price = 0
+    end
+    
     respond_to do |format|
-      if @article.save && !params[:stores].nil?
+      if @article.save
+        if !params[:stores].nil?
           @stores = Store.find(params[:stores])
           @stores.each { |s|
             @article.stores << s
           }
+        end
         
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
@@ -70,6 +77,11 @@ class ArticlesController < ApplicationController
     if !params[:stores].nil?
       # prevent assignment of empty element to stores reference
       params[:stores].delete_if { |x| x == ""}
+    end
+    
+    if @article.price.nil?
+      # user don't know the price of the article yet
+      @article.price = 0
     end
     
     if !params[:stores].nil?
