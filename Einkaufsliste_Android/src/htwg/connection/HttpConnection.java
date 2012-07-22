@@ -21,6 +21,8 @@ public class HttpConnection {
 	private InputStream inStream = null;
 	
 	public enum RequestType{
+		STORES,
+		ADDRESSES,
 		USERS,
 		SHOPPINGLISTS,
 		LISTINGS,
@@ -68,6 +70,12 @@ public class HttpConnection {
 				break;
 			case ARTICLES:
 				url += "articles.json";
+				break;
+			case ADDRESSES:
+				url += "addresses.json";
+				break;
+			case STORES:
+				url += "stores.json";
 				break;
 			}
 			

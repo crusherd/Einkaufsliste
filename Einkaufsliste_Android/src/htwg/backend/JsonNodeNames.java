@@ -9,4 +9,9 @@ public class JsonNodeNames {
 	public static final String TAG_PRICE = "price";
 	public static final String TAG_AMOUNT = "amount";
 	public static final String TAG_SHOPPING_LIST_ID = "shoppingList_id";
+	public static final String TAG_STORES = "stores";
+	public static final String TAG_ADDRESSES = "addresses";
+	public static final String TAG_STREET = "street";
+	public static final String TAG_ZIPCODE = "zipcode";
+	public static final String TAG_CITY = "city";
 }
