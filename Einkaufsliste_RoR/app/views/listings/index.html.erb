@@ -22,7 +22,7 @@
 						<td> <%= listentry.amount %></td>
 						<td> <%= entry.name %> </td>
 						<td> <%= number_to_currency entry.price, :unit => "&euro;", :separator => "," %></td>
-						<td> <%= button_to 'Edit', edit_article_path(entry), method: :get %> </td>
+						<td> <%= button_to 'Edit article', edit_path(@current_list,entry) %> </td>
 						<td> <%= button_to 'Delete entry', listentry, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
 					</tr>
 				<% end %>
@@ -33,7 +33,6 @@
 	
 	<%= render 'form' %>
 	<br />
-	
 <% else %>
 	<% @list_entries = Listing.select(:shoppinglist_id).order("shoppinglist_id ASC").group(:shoppinglist_id) %>
 	<% if @list_entries.exists? %>
@@ -69,5 +68,5 @@
 	<% end %>
 <% end %>
 
-<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Shoppinglists', shoppinglists_path, method: :get %> </div>	
 <div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %></div>

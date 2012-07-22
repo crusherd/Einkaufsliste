@@ -76,4 +76,8 @@ class ListingsController < ApplicationController
       end
     end
   end
+  
+  def edit
+    redirect_to edit_article_path(params[:article_id],:list_id => params[:list_id])
+  end
 end

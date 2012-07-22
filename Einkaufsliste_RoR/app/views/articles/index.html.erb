@@ -7,8 +7,11 @@
 <% else %>
 	<% @articles.each do |article|%>
 		<h2> <%= article.name %></h2>
+		<div style="display: table-cell;"> <%= button_to 'Edit', edit_article_path(article), method: :get %> </div>
+    <div style="display: table-cell;"> <%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %> </div>
+		<br />
 		<div style="display: table-cell; font-weight: bolder;">Price:&nbsp;</div>
-		<div style="display: table-cell;"> <%= number_to_currency article.price, :unit => "&euro;", :separator => "," %> </div>
+		<div style="display: table-cell;"> <%= number_to_currency article.price, :unit => "&euro; ", :separator => "," %> </div>
 		
 		<h3> Stores: </h3>
 		<% if article.stores.size > 0 %>
@@ -27,14 +30,11 @@
 		<% else %>
 			<p style="font-weight:bolder; color: red;"> <%= article.name %> has no assigned addresses</p>
 		<% end %>
-		<br />
-		<div style="display: table-cell;"> <%= button_to 'Show', article, method: :get %> </div>
-    <div style="display: table-cell;"> <%= button_to 'Edit', edit_article_path(article), method: :get %> </div>
-    <div style="display: table-cell;"> <%= button_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %> </div>		
+		<%= button_to 'Add Store', add_store_path(article) %>		
 		<hr />
 	<% end %>
 <% end %>
 
 <div style="display: table-cell;"> <%= button_to 'New Article', new_article_path, method: :get %> </div>
-<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'All shoppinglists', shoppinglists_path, method: :get %> </div>
 <div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

@@ -18,6 +18,11 @@
 
 <%= render 'form' %>
 
-<div style="display: table-cell;"> <%= button_to 'Show', @article, method: :get %> </div>
-<div style="display: table-cell;"> <%= button_to 'Back', :back, method: :get %> </div>
+<br />
+
+<% if !params[:list_id].nil? %>
+	<% @current_list = Shoppinglist.find_by_id(params[:list_id]) %>
+<div style="display: table-cell;"> <%= button_to 'Articles of ' + @current_list.name, select_shoppinglist_path(@current_list), method: :get %> </div>
+<% end %>
+<div style="display: table-cell;"> <%= button_to 'All Articles', articles_path, method: :get %> </div>
 <div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

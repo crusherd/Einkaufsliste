@@ -1,0 +1,60 @@
+<% @current_article = Article.find(params[:article_id]) %>
+
+<% if @current_article.nil? %>
+
+<% else %>
+	<h1>Add store to article "<%= @current_article.name %>"</h1>
+
+	<%= form_for @store, :url => create_article_store_ref_path(@current_article) do |f| %>
+		<% if @store.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@store.errors.count, "error") %> prohibited this store from being saved:</h2>
+	
+	      <ul>
+	      <% @store.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
+	
+		<table class="myTable">
+			<tr id="head">
+				<th> <%= f.label :name%> </th>
+		    <th></th>
+		  </tr>
+			<tr id="content">
+				<td> <%= f.text_field :name, :size => 12%></td>
+				<td>
+	    		<%= submit_tag 'Create and add to article' %>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+	
+	<%= form_for @store, :url => add_article_store_ref_path(@current_article) do |f| %>
+		<table class="myTable">
+		<tr id="head">
+			<th> <%= f.label 'Store' %> </th>
+			<th></th>
+		</tr>
+		<tr id="content">
+			<td>
+				<%= select_tag :store_id, options_for_select(
+						Store.order("name ASC").all.map { |a| [ a.name, a.id] }
+					), :prompt => "Choose a store" 
+				%>
+			</td>
+			<td><%= submit_tag 'Add to article' %></td>
+		</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+<% end %>
+<div style="display: table-cell;"> <%= button_to 'All articles', articles_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

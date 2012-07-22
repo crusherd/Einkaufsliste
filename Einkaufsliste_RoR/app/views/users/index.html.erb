@@ -10,14 +10,12 @@
 	    <th>Shoppinglist</th>
 	    <th></th>
 	    <th></th>
-	    <th></th>
 	  </tr>
 	
 	<% @users.each do |user| %>
 	  <tr id="content">
 	    <td><%= user.username %></td>
 	    <td><%= button_to 'Shoppinglist', select_user_path(user), method: :get %> </td>
-	    <td><%= button_to 'Show', user, method: :get %> </td>
 	    <td><%= button_to 'Edit', edit_user_path(user), method: :get %> </td>
 	    <td><%= button_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %> </td>
 	  </tr>

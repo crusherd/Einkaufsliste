@@ -54,7 +54,7 @@ class AddressesController < ApplicationController
   end
   
   
-  def new_address_ref
+  def new_store_address_ref
     @address = Address.new
     @current_store = Store.find_by_id(:store_id)
     
@@ -64,7 +64,7 @@ class AddressesController < ApplicationController
     end
   end
   
-  def create_address_ref
+  def create_store_address_ref
     @current_store = Store.find_by_id(params[:store_id])
     @address = Address.new(params[:address])
     
@@ -72,16 +72,16 @@ class AddressesController < ApplicationController
     
     respond_to do |format|
       if @address.save
-        format.html { redirect_to @current_store, notice: 'Address was successfully created.' }
+        format.html { redirect_to stores_path, notice: 'Address was successfully created.' }
         format.json { render json: @current_store, status: :created, location: @current_store }
       else
-        format.html { render action: "new_address_ref" }
+        format.html { render action: "new_store_address_ref" }
         format.json { render json: @address.errors, status: :unprocessable_entity }
       end
     end
   end
   
-  def add_address_ref
+  def add_store_address_ref
     @address = Address.new
     @current_store = Store.find_by_id(params[:store_id])
     @address_id = params[:address_id]
@@ -96,8 +96,8 @@ class AddressesController < ApplicationController
         format.html { redirect_to stores_path, notice: 'Address was successfully created.' }
         format.json { render json: @current_store, status: :created, location: @current_store }
       else
-        format.html { render action: "new_address_ref" }
-        format.json { render json: @address.errors, status: :unprocessable_entity }
+        format.html { render action: "new_store_address_ref" }
+        format.json { render json: @current_store, status: :no_action, location: @current_store }
       end
     end
   end

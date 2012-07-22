@@ -11,4 +11,5 @@ class Article < ActiveRecord::Base
   has_many :listings, :dependent => :destroy
   has_many :shoppinglists, :through => :listings
   has_and_belongs_to_many :stores
+    
 end

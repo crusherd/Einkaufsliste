@@ -2,5 +2,7 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<br />
+
+<div style="display: table-cell;"> <%= button_to 'All users', users_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get%> </div>

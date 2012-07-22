@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+	<%= hidden_field_tag 'list_id', params[:list_id] %>		
 	<table class="myTable">
 		<tr id="head">
 			<th> <%= f.label :name %> </th>
@@ -24,9 +25,9 @@
 			<td> <%= f.text_field :name %> </td>
 			<td> <%= f.text_field :price, :size => 6 %> </td>
 			<% if Store.all.count > 0 %>
-				<td> <%= select_tag :stores, options_from_collection_for_select( Store.all, :id, :name ), :include_blank => true, :multiple => true, :size => 3 %></td>
+			<td> <%= select_tag :stores, options_from_collection_for_select( Store.all, :id, :name ), :include_blank => true, :multiple => true, :size => 3 %></td>
 			<% end %>
-			<td> <%= f.submit %> </td>
+			<td> <%= f.submit %> </td>		
 		</tr>
 	</table>
 <% end %>

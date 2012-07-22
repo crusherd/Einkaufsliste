@@ -1,0 +1,62 @@
+<% @current_store = Store.find(params[:store_id]) %>
+
+<% if @current_store.nil? %>
+
+<% else %>
+	<h1>Add article to store "<%= @current_store.name %>"</h1>
+
+	<%= form_for @article, :url => create_store_article_ref_path(@current_store) do |f| %>
+		<% if @article.errors.any? %>
+	    <div id="error_explanation">
+	      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+	
+	      <ul>
+	      <% @article.errors.full_messages.each do |msg| %>
+	        <li><%= msg %></li>
+	      <% end %>
+	      </ul>
+	    </div>
+	  <% end %>
+	
+		<table class="myTable">
+			<tr id="head">
+				<th> <%= f.label :name%> </th>
+		    <th> <%= f.label :price %> </th>
+		    <th></th>
+		  </tr>
+			<tr id="content">
+				<td> <%= f.text_field :name, :size => 12%></td>
+				<td> <%= f.text_field :price, :size => 4 %></td>
+				<td>
+	    		<%= submit_tag 'Create and add to store' %>
+				</td>
+			</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+	
+	<%= form_tag add_store_article_ref_path(@current_store) do %>
+		<table class="myTable">
+		<tr id="head">
+			<th> <%= label_tag 'article', 'Article' %> </th>
+			<th></th>
+		</tr>
+		<tr id="content">
+			<td>
+				<%= select_tag :article_id, options_for_select(
+						Article.order("name ASC, price ASC").all.map { |a| [ a.name + ", " + number_to_currency(a.price, :unit => "€", :separator => ","), a.id] }
+					), :prompt => "Choose an article" 
+				%>
+			</td>
+			<td><%= submit_tag 'Add to store' %></td>
+		</tr>
+		</table>
+	<% end %>
+	<br />
+	<hr />
+	<br />
+<% end %>
+<div style="display: table-cell;"> <%= button_to 'All Stores', stores_path, method: :get %> </div>
+<div style="display: table-cell;"> <%= button_to 'Home', root_path, method: :get %> </div>

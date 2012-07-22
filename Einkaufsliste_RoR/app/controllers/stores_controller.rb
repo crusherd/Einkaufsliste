@@ -51,7 +51,7 @@ class StoresController < ApplicationController
 
     respond_to do |format|
       if @store.save
-        format.html { redirect_to @store, notice: 'Store was successfully created.' }
+        format.html { redirect_to stores_path, notice: 'Store was successfully created.' }
         format.json { render json: @store, status: :created, location: @store }
       else
         format.html { render action: "new" }
@@ -67,7 +67,7 @@ class StoresController < ApplicationController
 
     respond_to do |format|
       if @store.update_attributes(params[:store])
-        format.html { redirect_to @store, notice: 'Store was successfully updated.' }
+        format.html { redirect_to stores_path, notice: 'Store was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -91,7 +91,12 @@ class StoresController < ApplicationController
   
   def add_address
     @current_store = Store.find(params[:id])
-    redirect_to new_address_ref_path(@current_store)
+    redirect_to new_store_address_ref_path(@current_store)
+  end
+  
+  def add_article
+    @current_store = Store.find(params[:id])
+    redirect_to new_store_article_ref_path(@current_store)
   end
     
   def delete_address_ref
@@ -115,6 +120,53 @@ class StoresController < ApplicationController
     respond_to do |format|
       format.html { redirect_to stores_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def new_article_store_ref
+    @store = Store.new
+    @current_article = Store.find_by_id(:article_id)
+    
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @store }
+    end
+  end
+  
+  def create_article_store_ref
+    @store = Store.new(params[:store])
+    @current_article = Article.find_by_id(params[:article_id])
+    
+    @current_article.stores << @store
+    
+    respond_to do |format|
+      if @store.save
+        format.html { redirect_to articles_path, notice: 'Address was successfully created.' }
+        format.json { render json: @current_article, status: :created, location: @current_article }
+      else
+        format.html { render action: "new_article_store_ref" }
+        format.json { render json: @store.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def add_article_store_ref
+    @store = Store.new
+    @current_article = Article.find_by_id(params[:article_id])
+    @store_id = params[:store_id]
+    
+    respond_to do |format|
+      if @store_id != ""
+        @store = Store.find_by_id(@store_id)
+        @current_article.stores.delete(@store) # prohibit duplicate references to store
+        @current_article.stores << @store
+      
+        format.html { redirect_to articles_path, notice: 'Store was successfully added.' }
+        format.json { render json: @current_article, status: :added, location: @current_article }
+      else 
+        format.html { render action: "new_article_store_ref" }
+        format.json { render json: @current_article, status: :no_action, location: @current_article }
+      end
     end
   end
 end
