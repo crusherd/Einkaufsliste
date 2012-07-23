@@ -10,7 +10,7 @@ public class Article {
 	private ArrayList<Store>stores = null;
 	private boolean isVisible = false;
 
-	public Article(String name, int id, Double price) {
+	public Article(int id, String name, Double price) {
 		this.name = name;
 		this.id = id;
 		this.price = price;

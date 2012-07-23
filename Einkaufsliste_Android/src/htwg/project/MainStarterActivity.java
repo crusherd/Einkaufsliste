@@ -1,8 +1,5 @@
 package htwg.project;
 
-import htwg.connection.HttpConnection;
-import htwg.connection.HttpConnection.RequestType;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,8 +9,6 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
-
-import org.json.JSONArray;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,7 +24,6 @@ import android.widget.Toast;
 
 public class MainStarterActivity extends Activity {
 
-	private HttpConnection connection = null;
 	private final String filename = "ipAddress";
 	private static final String IPV4_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
@@ -54,9 +48,9 @@ public class MainStarterActivity extends Activity {
 //        if file is present we use this
         	if(fileIsPresent()) {
 				String ipText = readFromFile();
-				if(!ipText.equals("")) {
+				if(!"".equals(ipText)) {
 					if(pingHost(ipText)) {
-						startConnection(ipText);
+						startUserSelection(ipText);
 					}
 				}
 			}
@@ -106,7 +100,7 @@ public class MainStarterActivity extends Activity {
     		} else {
     			if(pingHost(ipText)) {
     				writeToFile(ipText);
-    				startConnection(ipText);
+    				startUserSelection(ipText);
     			} else {
     				Toast.makeText(this, R.string.host_not_reachable, Toast.LENGTH_SHORT).show();
     			}
@@ -116,6 +110,10 @@ public class MainStarterActivity extends Activity {
     	}
     }
 
+    /**
+     * check if file is present
+     * @return true if file is present
+     */
     private boolean fileIsPresent() {
     	try {
 			FileInputStream fis = openFileInput(filename);
@@ -130,6 +128,10 @@ public class MainStarterActivity extends Activity {
 
     }
 
+    /**
+     * write the ip address from input to file
+     * @param text - ip address to write
+     */
     private void writeToFile(String text) {
     	try {
 			FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE);
@@ -142,6 +144,10 @@ public class MainStarterActivity extends Activity {
 		}
     }
 
+    /**
+     * read ip from file
+     * @return ip Address
+     */
     private String readFromFile() {
     	FileInputStream fos;
 		try {
@@ -158,6 +164,11 @@ public class MainStarterActivity extends Activity {
     	return "";
     }
 
+    /**
+     * check if host on given ip is reachable
+     * @param ip - Host
+     * @return true if reachable
+     */
     private boolean pingHost(String ip) {
 		try {
 			InetAddress inAddress = InetAddress.getByName(ip);
@@ -173,19 +184,13 @@ public class MainStarterActivity extends Activity {
     	return false;
     }
 
-    private void startConnection(String ipAddress) {
-    	connection = new HttpConnection(ipAddress);
-		JSONArray jsonArray = connection.getJsonFromRequest(RequestType.USERS);
-//    			connection successful and retrieved data
-		if(jsonArray != null) {
-			//start user selection screen
-			startUserSelection(jsonArray);
-		}
-    }
-
-    private void startUserSelection(JSONArray usernames) {
+    /**
+     * start view for user selection
+     * @param ipText - ip address
+     */
+    private void startUserSelection(String ipText) {
     	Intent intent = new Intent(this, UserListActivity.class);
-    	intent.putExtra("ipAddress", connection.getIpAddress());
+    	intent.putExtra("ipAddress", ipText);
     	intent.putExtra("wifiOn", true);
     	startActivity(intent);
     }

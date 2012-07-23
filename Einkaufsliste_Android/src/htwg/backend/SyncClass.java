@@ -170,8 +170,8 @@ public class SyncClass {
       for(int i = 0; i < allJsonArticles.length(); ++i) {
       	try {
       		JSONObject object = allJsonArticles.getJSONObject(i);
-      		Article article = new Article(object.getString(JsonNodeNames.TAG_NAME),
-      									  object.getInt(JsonNodeNames.TAG_ID), object.getDouble(JsonNodeNames.TAG_PRICE));
+      		Article article = new Article(object.getInt(JsonNodeNames.TAG_ID),
+      									  object.getString(JsonNodeNames.TAG_NAME), object.getDouble(JsonNodeNames.TAG_PRICE));
       		JSONArray stores = object.getJSONArray(JsonNodeNames.TAG_STORES);
       		if(stores.length() > 0) {
       			for(int j = 0; j < stores.length(); ++j) {

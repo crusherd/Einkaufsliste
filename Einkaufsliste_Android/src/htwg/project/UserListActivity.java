@@ -26,6 +26,7 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 	private String ipAddress = "";
 	HttpConnection connection = null;
 
+	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,20 +54,21 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 //        	deactivate sync button
         	Button syncButton = (Button) findViewById(R.id.SyncButton);
         	syncButton.setVisibility(Button.GONE);
-        	updateSpinner();
         }
-
+        updateSpinner();
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
 	}
 
-
+	/** Called when the activity is paused or shutdowned */
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
 
-//	react on item selection
+	/**
+	 * react on item selection
+	 */
 	public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 //		no user chosen
 		if(pos == 0) {
@@ -81,12 +83,17 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 		startActivity(intent);
 	}
 
-//	callback which does nothing
+	/**
+	 * callback which does nothing
+	 */
 	public void onNothingSelected(AdapterView<?> parent) {
 
 	}
 
-//	logic for synchronize
+	/**
+	 * logic for synchronize Button in view
+	 * @param view
+	 */
 	public void synchronize(View view) {
 		try {
 			Toast.makeText(this, R.string.start_sync, Toast.LENGTH_SHORT).show();
@@ -103,6 +110,9 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 		}
 	}
 
+	/**
+	 * update the spinner with usernames
+	 */
 	private void updateSpinner() {
 		spinnerAdapter.clear();
 		spinnerAdapter.add(new User(-1, ""));
@@ -112,8 +122,10 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 		SQLiteDatabase db = dbConnection.getReadableDatabase();
 		Cursor cursor = db.query(DatabaseConnection.TABLE_USERS, columns, null, null, null, null, null);
 		cursor.moveToFirst();
+//		iterate through users an add them to an adapter
 		while(!cursor.isAfterLast()) {
-			User user = new User(cursor.getInt(0), cursor.getString(1));
+			User user = new User(cursor.getInt(cursor.getColumnIndex(DatabaseConnection.COLUMN_ID)),
+								 cursor.getString(cursor.getColumnIndex(DatabaseConnection.COLUMN_USERNAME)));
 			spinnerAdapter.add(user);
 			Log.i(UserListActivity.class.getName(), "Added user: " + user.getUsername() + " to spinner");
 			cursor.moveToNext();
