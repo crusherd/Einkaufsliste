@@ -1,11 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
+BBQ_mh:
+  id: 1
+  name: BBQ
   creationDate: 2012-06-29
   user_id: 1
 
-two:
-  name: MyString
+BBQ_rodancza:
+  id: 2
+  name: BBQ
   creationDate: 2012-06-29
-  user_id: 1
+  user_id: 2
+  
+Grillfest_noUser:
+  id: 3
+  name: Grillfest
+  creationDate: 2012-08-27
+  user_id: nil

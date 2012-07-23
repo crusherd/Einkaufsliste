@@ -1,7 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: 
+Rewe:
+  id: 1
+  name: Rewe
 
-two:
-  name: 
+Aldi:
+  id: 2
+  name: Aldi
+    
+Lidl: 
+  id: 3
+  name: Lidl

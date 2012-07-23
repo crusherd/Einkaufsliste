@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  street: 
-  zipCode: 
-  city: 
+Musterstrasse:
+  street: Musterstraße 12.
+  zipCode: D-12354
+  city: Musterstadt
 
-two:
-  street: 
-  zipCode: 
-  city: 
+Abcweg:
+  street: Abcweg 50 
+  zipCode: A-47924
+  city: Wien

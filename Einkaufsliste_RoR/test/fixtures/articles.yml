@@ -1,9 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
-  price: 9.99
+Kaese:
+  id: 1
+  name: Gruyer (150g)
+  price: 3.89
 
-two:
-  name: MyString
-  price: 9.99
+Salami:
+  id: 2
+  name: Salami (200g)
+  price: 2.16
+  
+Milch:
+   id: 3
+   name: Milch (1L)
+   price: 0.69
