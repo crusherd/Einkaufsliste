@@ -29,4 +29,9 @@ public class Store {
 	public ArrayList<Address> getAddresses(){
 		return addresses;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

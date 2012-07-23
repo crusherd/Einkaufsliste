@@ -34,21 +34,22 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int connectButtonText=0x7f040005;
-        public static final int end_sync=0x7f040011;
+        public static final int end_sync=0x7f040012;
         public static final int enter_ip=0x7f040002;
         public static final int example_ip=0x7f040003;
         public static final int host_not_reachable=0x7f040007;
         public static final int spinner_choose_user=0x7f040009;
-        public static final int start_sync=0x7f040010;
+        public static final int start_sync=0x7f040011;
         public static final int starter_user_txt=0x7f040001;
         public static final int syncronize_button_text=0x7f040008;
         public static final int toast_no_address_found=0x7f04000d;
         public static final int toast_no_article_found=0x7f04000c;
+        public static final int toast_no_listing_found=0x7f04000f;
         public static final int toast_no_shoppinglist_found=0x7f04000b;
         public static final int toast_no_store_found=0x7f04000e;
         public static final int toast_no_user_found=0x7f04000a;
         public static final int toast_not_an_ip=0x7f040004;
-        public static final int toast_sync_aborted=0x7f04000f;
+        public static final int toast_sync_aborted=0x7f040010;
         public static final int wifi_is_off=0x7f040006;
     }
 }

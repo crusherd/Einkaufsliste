@@ -30,6 +30,7 @@ public class SyncClass {
 	private ArrayList<Article>articlesArray = null;
 	private ArrayList<Address>addressesArray = null;
 	private ArrayList<Store>storesArray = null;
+	private ArrayList<Listing>listingsArray = null;
 
 	private JSONArray allJsonUsers = null;
 	private JSONArray allJsonShoppingLists = null;
@@ -44,6 +45,7 @@ public class SyncClass {
         articlesArray = new ArrayList<Article>();
         addressesArray = new ArrayList<Address>();
         storesArray = new ArrayList<Store>();
+        listingsArray = new ArrayList<Listing>();
         connection = new HttpConnection(ipAddress);
         Log.i(UserListActivity.class.getName(), "Received: " + connection.getClass().getName());
         this.context = context;
@@ -52,10 +54,10 @@ public class SyncClass {
 
 	public void synchronize() throws Exception {
 		getAllJsonData();
+		extractJsonData();
 		db = dbConnection.getWritableDatabase();
 //		clear db and set new up
 		dbConnection.onUpgrade(db, 1, 1);
-		extractJsonData();
 		saveAllDataToDB();
 		dbConnection.close();
 	}
@@ -192,7 +194,28 @@ public class SyncClass {
 	}
 
 	private void extractJsonListings() {
-
+//      get JSON listings objects as String from JSON-Array an put them to an ArrayList
+      for(int i = 0; i < allListings.length(); ++i) {
+      	try {
+      		JSONObject object = allListings.getJSONObject(i);
+      		Listing listing = new Listing(object.getInt(JsonNodeNames.TAG_ID),
+      											 object.getInt(JsonNodeNames.TAG_SHOPPING_LIST_ID),
+      											 object.getInt(JsonNodeNames.TAG_ARTICLE_ID),
+      											 object.getInt(JsonNodeNames.TAG_AMOUNT));
+      		listingsArray.add(listing);
+      		Log.i(UserListActivity.class.getName(), allListings.getJSONObject(i).toString());
+      	} catch (JSONException e) {
+      		Log.i(UserListActivity.class.getName(), e.getMessage());
+      	} catch (Exception e) {
+//      		needed because bundle.getString() throws Exception with no message if key not found.
+//      		This causes in Log.i() a NPE.
+      	}
+      }
+      if(listingsArray.isEmpty()) {
+			Log.e(UserListActivity.class.getName(), "No listing found");
+			Toast.makeText(context, R.string.toast_no_listing_found, Toast.LENGTH_SHORT).show();
+			throw new RuntimeException();
+      }
 	}
 
 	private void extractJsonAddresses() {
@@ -287,7 +310,14 @@ public class SyncClass {
 
 //	connection between a shoppinglist and their articles with amount
 	private void saveListingsToDB() {
-
+		for(Listing listing: listingsArray) {
+			ContentValues values = new ContentValues();
+			values.put(DatabaseConnection.COLUMN_SHOPPINGLIST_ID, listing.getShoppinglistId());
+			values.put(DatabaseConnection.COLUMN_ARTICLE_ID, listing.getArticleId());
+			values.put(DatabaseConnection.COLUMN_AMOUNT, listing.getAmount());
+			db.insert(DatabaseConnection.TABLE_LISTINGS, null, values);
+			Log.i(SyncClass.class.getName(), "Written listing: " + listing.toString());
+		}
 	}
 
 	private void saveConnectionStoreArticleToDB() {

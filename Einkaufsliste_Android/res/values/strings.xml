@@ -15,6 +15,7 @@
     <string name="toast_no_article_found">No article received</string>
     <string name="toast_no_address_found">No address received</string>
     <string name="toast_no_store_found">No store received</string>
+    <string name="toast_no_listing_found">No Listing received</string>
     <string name="toast_sync_aborted">Sync aborted due to error</string>
     <string name="start_sync">Sync started</string>
     <string name="end_sync">Sync ended</string>
