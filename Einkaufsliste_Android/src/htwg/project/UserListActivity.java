@@ -48,6 +48,8 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
             ipAddress = (String) bundle.get("ipAddress");
             connection = new HttpConnection(ipAddress);
         } else {
+//			finish MainstarterActivity because we are offline
+        	setResult(0);
 //        	deactivate sync button
         	Button syncButton = (Button) findViewById(R.id.SyncButton);
         	syncButton.setVisibility(Button.GONE);

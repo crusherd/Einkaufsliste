@@ -63,7 +63,7 @@ public class MainStarterActivity extends Activity {
         } else {
         	Intent intent = new Intent(this, UserListActivity.class);
         	intent.putExtra("wifiOn", false);
-        	startActivity(intent);
+        	startActivityForResult(intent, 0);
         }
     }
 
@@ -80,6 +80,16 @@ public class MainStarterActivity extends Activity {
 			return true;
 		}
     	return false;
+    }
+
+    /**
+     * if we are offline we don't want to see the input IP view
+     */
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(resultCode == 0) {
+			finish();
+		}
     }
 
     /**
