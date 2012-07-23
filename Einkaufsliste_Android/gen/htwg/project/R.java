@@ -14,12 +14,12 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+        public static final int ChooseUserLayout=0x7f050000;
         public static final int ConnectButton=0x7f050008;
         public static final int IPTextField=0x7f050007;
         public static final int MainLayout=0x7f050005;
-        public static final int RelativeLayout1=0x7f050000;
+        public static final int SyncButton=0x7f050001;
         public static final int UserChooseSpinner=0x7f050003;
-        public static final int button1=0x7f050001;
         public static final int listingArticleView=0x7f050004;
         public static final int shoppingListsView=0x7f050009;
         public static final int starter_text=0x7f050006;

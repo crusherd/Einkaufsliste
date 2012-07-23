@@ -1,17 +1,14 @@
 package htwg.project;
 
-import htwg.backend.JsonNodeNames;
 import htwg.backend.SyncClass;
 import htwg.backend.User;
+import htwg.connection.DatabaseConnection;
 import htwg.connection.HttpConnection;
-import htwg.connection.HttpConnection.RequestType;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +16,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,15 +32,27 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_user);
-//        usersArray = new ArrayList<User>();
+//        deactivate standby
+        View view = findViewById(R.id.ChooseUserLayout);
+        view.setKeepScreenOn(true);
+
         Bundle bundle = this.getIntent().getExtras();
-//        get HttpConnection for receiving json data
-        ipAddress = (String) bundle.get("ipAddress");
-        connection = new HttpConnection(ipAddress);
 //        make chooseable users visible in a spinner
         Spinner spinner = (Spinner) findViewById(R.id.UserChooseSpinner);
         spinnerAdapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        boolean wifiOn = (Boolean) bundle.get("wifiOn");
+        if(wifiOn) {
+//          get HttpConnection for receiving json data
+            ipAddress = (String) bundle.get("ipAddress");
+            connection = new HttpConnection(ipAddress);
+        } else {
+//        	deactivate sync button
+        	Button syncButton = (Button) findViewById(R.id.SyncButton);
+        	syncButton.setVisibility(Button.GONE);
+        	updateSpinner();
+        }
 
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
@@ -63,32 +73,10 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 //		get selected User
 		User user = (User) parent.getItemAtPosition(pos);
 
-//		retrieve all shopping Lists
-		JSONArray allUserShoppingLists = connection.getJsonFromRequest(RequestType.SHOPPINGLISTS);
-
-//		filter them
-		JSONArray filterdShoppingLists = new JSONArray();
-		try {
-			if(allUserShoppingLists != null) {
-				for(int i = 0; i < allUserShoppingLists.length(); ++i) {
-					JSONObject tmp = allUserShoppingLists.getJSONObject(i);
-					if(tmp.getInt(JsonNodeNames.TAG_USER_ID) == user.getId()) {
-						filterdShoppingLists.put(allUserShoppingLists.getJSONObject(i));
-					}
-				}
-
-//				start Activity to show Shoppinglists from selected user
-				Intent intent = new Intent(this, ShoppingListsActivity.class);
-				intent.putExtra("ipAddress", connection.getIpAddress());
-				intent.putExtra("user", user.getId());
-				for(int i = 0; i < filterdShoppingLists.length(); ++i) {
-					intent.putExtra("json_shoppingLists" + i, filterdShoppingLists.getJSONObject(i).toString());
-				}
-				startActivity(intent);
-			}
-		} catch (Exception e) {
-			Log.i(UserListActivity.class.getName(), e.getMessage());
-		}
+//		start Activity to show Shoppinglists from selected user
+		Intent intent = new Intent(this, ShoppingListsActivity.class);
+		intent.putExtra("user_id", user.getId());
+		startActivity(intent);
 	}
 
 //	callback which does nothing
@@ -116,8 +104,19 @@ public class UserListActivity extends Activity implements OnItemSelectedListener
 	private void updateSpinner() {
 		spinnerAdapter.clear();
 		spinnerAdapter.add(new User(-1, ""));
-//		TODO: query DB for users to show
-
+//		query db for all users
+		String[] columns = {DatabaseConnection.COLUMN_ID , DatabaseConnection.COLUMN_USERNAME};
+		DatabaseConnection dbConnection = new DatabaseConnection(this);
+		SQLiteDatabase db = dbConnection.getReadableDatabase();
+		Cursor cursor = db.query(DatabaseConnection.TABLE_USERS, columns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast()) {
+			User user = new User(cursor.getInt(0), cursor.getString(1));
+			spinnerAdapter.add(user);
+			Log.i(UserListActivity.class.getName(), "Added user: " + user.getUsername() + " to spinner");
+			cursor.moveToNext();
+		}
+		dbConnection.close();
 		spinnerAdapter.notifyDataSetChanged();
 	}
 }

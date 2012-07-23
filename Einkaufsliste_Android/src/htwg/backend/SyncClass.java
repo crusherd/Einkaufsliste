@@ -46,20 +46,24 @@ public class SyncClass {
         addressesArray = new ArrayList<Address>();
         storesArray = new ArrayList<Store>();
         listingsArray = new ArrayList<Listing>();
-        connection = new HttpConnection(ipAddress);
+        if(!"".equals(ipAddress)) {
+			connection = new HttpConnection(ipAddress);
+		}
         Log.i(UserListActivity.class.getName(), "Received: " + connection.getClass().getName());
         this.context = context;
         dbConnection = new DatabaseConnection(context);
 	}
 
 	public void synchronize() throws Exception {
-		getAllJsonData();
-		extractJsonData();
-		db = dbConnection.getWritableDatabase();
-//		clear db and set new up
-		dbConnection.onUpgrade(db, 1, 1);
-		saveAllDataToDB();
-		dbConnection.close();
+		if(connection != null) {
+			getAllJsonData();
+			extractJsonData();
+			db = dbConnection.getWritableDatabase();
+//			clear db and set new up
+			dbConnection.onUpgrade(db, 1, 1);
+			saveAllDataToDB();
+			dbConnection.close();
+		}
 	}
 
 	private void getAllJsonData() {
@@ -109,8 +113,8 @@ public class SyncClass {
       	try {
       		JSONObject object = allJsonShoppingLists.getJSONObject(i);
       		Shoppinglist list = new Shoppinglist(object.getInt(JsonNodeNames.TAG_ID),
-      											 object.getInt(JsonNodeNames.TAG_USER_ID),
-      											 object.getString(JsonNodeNames.TAG_NAME));
+      											 object.getString(JsonNodeNames.TAG_NAME),
+      											 object.getInt(JsonNodeNames.TAG_USER_ID));
       		shoppinglistsArray.add(list);
       		Log.i(UserListActivity.class.getName(),allJsonShoppingLists.getJSONObject(i).toString());
       	} catch (JSONException e) {

@@ -28,55 +28,60 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainStarterActivity extends Activity {
-	
-	private View view = null;
+
 	private HttpConnection connection = null;
 	private final String filename = "ipAddress";
 	private static final String IPV4_PATTERN = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
 										"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-	
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
 //        some gimmicks
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
-        
+
 //        deactivate stand-by mode
-        view = findViewById(R.id.MainLayout);
+        View view = findViewById(R.id.MainLayout);
         view.setKeepScreenOn(true);
-        
+
 //        check if wifi is on
         if(isWifiOn()) {
 //        if file is present we use this
         	if(fileIsPresent()) {
 				String ipText = readFromFile();
 				if(!ipText.equals("")) {
-					if(pingHost(ipText))
+					if(pingHost(ipText)) {
 						startConnection(ipText);
+					}
 				}
 			}
+        } else {
+        	Intent intent = new Intent(this, UserListActivity.class);
+        	intent.putExtra("wifiOn", false);
+        	startActivity(intent);
         }
     }
-    
+
     /** Called when the activity is paused or shutdowned */
     @Override
     public void onPause( ) {
     	super.onPause();
     }
-    
+
     private boolean isWifiOn() {
     	ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
     	NetworkInfo wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-    	if(wifi.isConnected())
-    		return true;
+    	if(wifi.isConnected()) {
+			return true;
+		}
     	return false;
     }
-    
+
     /**
      * Logic if Connect button is pressed
      * @param view
@@ -100,7 +105,7 @@ public class MainStarterActivity extends Activity {
     		Toast.makeText(this, R.string.wifi_is_off, Toast.LENGTH_LONG).show();
     	}
     }
-    
+
     private boolean fileIsPresent() {
     	try {
 			FileInputStream fis = openFileInput(filename);
@@ -112,9 +117,9 @@ public class MainStarterActivity extends Activity {
 			Log.i(MainStarterActivity.class.getName(),e.getMessage());
 		}
     	return false;
-    	
+
     }
-    
+
     private void writeToFile(String text) {
     	try {
 			FileOutputStream fos = openFileOutput(filename, Context.MODE_PRIVATE);
@@ -126,7 +131,7 @@ public class MainStarterActivity extends Activity {
 			Log.i(MainStarterActivity.class.getName(), e.getMessage());
 		}
     }
-    
+
     private String readFromFile() {
     	FileInputStream fos;
 		try {
@@ -142,21 +147,22 @@ public class MainStarterActivity extends Activity {
 		}
     	return "";
     }
-    
+
     private boolean pingHost(String ip) {
 		try {
 			InetAddress inAddress = InetAddress.getByName(ip);
-			if(inAddress.isReachable(500))
+			if(inAddress.isReachable(500)) {
 				return true;
+			}
 		} catch (UnknownHostException e) {
 			Log.i(MainStarterActivity.class.getName(),e.getMessage());
 		} catch (IOException e) {
 			Log.i(MainStarterActivity.class.getName(),e.getMessage());
-		} 
-    	
+		}
+
     	return false;
     }
-    
+
     private void startConnection(String ipAddress) {
     	connection = new HttpConnection(ipAddress);
 		JSONArray jsonArray = connection.getJsonFromRequest(RequestType.USERS);
@@ -166,10 +172,11 @@ public class MainStarterActivity extends Activity {
 			startUserSelection(jsonArray);
 		}
     }
-    
+
     private void startUserSelection(JSONArray usernames) {
     	Intent intent = new Intent(this, UserListActivity.class);
     	intent.putExtra("ipAddress", connection.getIpAddress());
+    	intent.putExtra("wifiOn", true);
     	startActivity(intent);
     }
 }

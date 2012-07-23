@@ -1,109 +1,74 @@
 package htwg.project;
 
-import htwg.backend.JsonNodeNames;
 import htwg.backend.Shoppinglist;
-import htwg.connection.HttpConnection;
-import htwg.connection.HttpConnection.RequestType;
-
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Activity;
+import htwg.connection.DatabaseConnection;
+import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ShoppingListsActivity extends Activity implements OnItemSelectedListener{
-	
-//	stores all shoppingLists from given user in UserListActivity
-	private ArrayList<Shoppinglist>shoppingLists = null;
-	private HttpConnection connection = null;
+public class ShoppingListsActivity extends ListActivity{
+
+	private Bundle bundle = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.shopping_lists);
-        
-        shoppingLists = new ArrayList<Shoppinglist>();
-        Bundle bundle = this.getIntent().getExtras();
-//        get HttpConnection for receiving json data
-        String ipAddress = (String) bundle.get("ipAddress");
-        connection = new HttpConnection(ipAddress);
-        Log.i(ShoppingListsActivity.class.getName(), "Received: " + connection.getClass().getName());
-        
-//      get Json Objects as String from Extras an put them to an ArrayList
-      for(int i = 0; i < bundle.size(); ++i) {
-      	try {
-      		JSONObject object = new JSONObject(bundle.getString("json_shoppingLists" + i));
-      		shoppingLists.add(new Shoppinglist(object.getInt(JsonNodeNames.TAG_ID), 
-      				object.getInt(JsonNodeNames.TAG_USER_ID), 
-      				object.getString(JsonNodeNames.TAG_NAME)));
-      		Log.i(UserListActivity.class.getName(), bundle.getString("json_shoppingLists" + i));
-      	} catch (JSONException e) {
-      		Log.i(UserListActivity.class.getName(), e.getMessage());
-      	} catch (Exception e) {
-//    		needed because bundle.getString() throws Exception with no message if key not found.
-//    		This causes in Log.i() a NPE.
-    	}
-      }
-      
-//      add shoppingLists to listView
-      ListView listView = (ListView) findViewById(R.id.shoppingListsView);
-      ArrayAdapter<Shoppinglist> arrayAdapter = new ArrayAdapter<Shoppinglist>(this, android.R.layout.simple_list_item_1, shoppingLists);
-      listView.setAdapter(arrayAdapter);
-      
+
+        bundle = this.getIntent().getExtras();
+        int userId = bundle.getInt("user_id");
+
+        ListView listView = getListView();
+//      deactivate standby
+        listView.setKeepScreenOn(true);
+        ArrayAdapter<Shoppinglist> arrayAdapter = new ArrayAdapter<Shoppinglist>(this, android.R.layout.simple_list_item_1);
+
+//        db query
+        requestDataFromDB(userId, arrayAdapter);
+        listView.setAdapter(arrayAdapter);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
 	}
 
 //	react on item selection
-	public void onItemSelected(AdapterView<?> parent, View view, int pos,
-			long id) {
+	@Override
+	public void onListItemClick(ListView parent, View view, int pos, long id) {
 //		get selected shoppingList
 		Shoppinglist shoppingList = (Shoppinglist) parent.getItemAtPosition(pos);
-		
-//		retrieve all articles
-		JSONArray allArticles = connection.getJsonFromRequest(RequestType.ARTICLES);
-		
-//		filter them
-		JSONArray filterdArticles = new JSONArray();
-		try {
-			if(allArticles != null) {
-				for(int i = 0; i < allArticles.length(); ++i) {
-					JSONObject tmp = allArticles.getJSONObject(i);
-					if(tmp.getInt(JsonNodeNames.TAG_SHOPPING_LIST_ID) == shoppingList.getId())
-						filterdArticles.put(allArticles.getJSONObject(i));
-				}
-				
-//				start Activity to show Shoppinglists from selected user
-				Intent intent = new Intent(this, ShoppingListsActivity.class);
-				intent.putExtra("ipAddress", connection.getIpAddress());
-				intent.putExtra("user", shoppingList.getId());
-				for(int i = 0; i < filterdArticles.length(); ++i)
-						intent.putExtra("json_articles" + i, filterdArticles.getJSONObject(i).toString());
-				startActivity(intent);
-			}
-		} catch (Exception e) {
-			Log.i(UserListActivity.class.getName(), e.getMessage());
-		}
+
+//		start Activity to show Shoppinglists from selected user
+		Intent intent = new Intent(this, ListingActivity.class);
+		intent.putExtra("user_id", bundle.getInt("user_id"));
+		intent.putExtra("shoppinglist_id", shoppingList.getId());
+		startActivity(intent);
 	}
 
-//	callback which does nothing
-	public void onNothingSelected(AdapterView<?> parent) {
-		
+	private void requestDataFromDB(int userId, ArrayAdapter<Shoppinglist> arrayAdapter) {
+		String[] columns = {DatabaseConnection.COLUMN_ID, DatabaseConnection.COLUMN_NAME, DatabaseConnection.COLUMN_USER_ID};
+        String selection = DatabaseConnection.COLUMN_USER_ID + " = " + userId;
+        DatabaseConnection dbConnection = new DatabaseConnection(this);
+        SQLiteDatabase db = dbConnection.getReadableDatabase();
+        Cursor cursor = db.query(DatabaseConnection.TABLE_SHOPPINGLISTS, columns, selection, null, null, null, null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+        	Shoppinglist list = new Shoppinglist(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
+//          add shoppingLists to listView
+        	arrayAdapter.add(list);
+        	Log.i(ShoppingListsActivity.class.getName(), "Added shoppinglist: " + list.getName() + " to listview");
+			cursor.moveToNext();
+        }
+        dbConnection.close();
 	}
+
 }
