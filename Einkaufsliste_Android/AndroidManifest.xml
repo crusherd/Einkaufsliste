@@ -36,5 +36,9 @@
             android:name=".ListingActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="ShowStoresActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 </manifest>

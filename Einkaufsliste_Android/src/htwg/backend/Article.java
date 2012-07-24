@@ -8,7 +8,6 @@ public class Article {
 	private double price = 0.0;
 	private int id = 0;
 	private ArrayList<Store>stores = null;
-	private boolean isVisible = false;
 
 	public Article(int id, String name, Double price) {
 		this.name = name;
@@ -25,10 +24,6 @@ public class Article {
 		return price;
 	}
 
-	public boolean isVisible() {
-		return isVisible;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -41,7 +36,9 @@ public class Article {
 		return stores;
 	}
 
-	public void setVisible(boolean isVisible) {
-		this.isVisible = isVisible;
+	@Override
+	public String toString() {
+		return name;
 	}
+
 }

@@ -19,7 +19,6 @@ android.permission.INTERNET
 android.permission.ACCESS_WIFI_STATE
 android.permission.ACCESS_NETWORK_STATE
 
-
 Anforderungen für Ruby on Rails
 ===============================
 * ruby Version 1.9.3

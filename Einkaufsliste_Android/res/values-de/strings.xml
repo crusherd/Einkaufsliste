@@ -19,4 +19,5 @@
     <string name="toast_sync_aborted">Sync wegen Fehler abgebrochen</string>
     <string name="start_sync">Synchronisation gestartet</string>
     <string name="end_sync">Synchronisation beendet</string>
+    <string name="show_articles">Zeige Artikel</string>
 </resources>

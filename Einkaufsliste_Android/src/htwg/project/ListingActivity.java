@@ -3,27 +3,24 @@ package htwg.project;
 import htwg.backend.Article;
 import htwg.connection.DatabaseConnection;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-public class ListingActivity extends ListActivity implements OnItemLongClickListener{
+public class ListingActivity extends ListActivity {
 
 	private Bundle bundle = null;
-	private ArrayAdapter<String>arrayAdapter = null;
+	private SimpleAdapter simpleAdapter = null;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -38,17 +35,17 @@ public class ListingActivity extends ListActivity implements OnItemLongClickList
         ListView listView = getListView();
 //      deactivate stand-by mode
         listView.setKeepScreenOn(true);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+
 //        db query
-        requestDataFromDB(shoppinglistId);
+        ArrayList<HashMap<String, TextView>> data = requestDataFromDB(shoppinglistId);
 //        sort strings
-        arrayAdapter.sort(new Comparator<String>() {
-        	public int compare(String obj1, String obj2) {
-        		return obj1.compareTo(obj2);
-        	}
-		});
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemLongClickListener(this);
+//        arrayAdapter.sort(new Comparator<String>() {
+//        	public int compare(String obj1, String obj2) {
+//        		return obj1.compareTo(obj2);
+//        	}
+//		});
+        simpleAdapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_1, new String[] {"content"}, new int[] {android.R.layout.simple_list_item_1});
+        listView.setAdapter(simpleAdapter);
 	}
 
 	/** Called when the activity is paused or shutdowned */
@@ -57,40 +54,34 @@ public class ListingActivity extends ListActivity implements OnItemLongClickList
 		super.onPause();
 	}
 
-//	TODO: onLongClickListener implementieren
-	public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
-		Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-		vibrator.vibrate(50);
-		return false;
-	}
-
-
 //	TODO: Does not work!!
 	/**
 	 * stikes an item if clicked
 	 */
 	@Override
 	public void onListItemClick(ListView parent, View view, int pos, long id) {
+		super.onListItemClick(parent, view, pos, id);
 		Log.i("test", "item selected: " + pos + " id: " + id);
-		String item = (String) parent.getItemAtPosition(pos);
-		arrayAdapter.remove(item);
-		TextView strikedText = new TextView(this);
-		strikedText.setText(item);
-		strikedText.setPaintFlags(strikedText.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-		item = (String) strikedText.getText();
-		arrayAdapter.insert(item, pos);
-		arrayAdapter.notifyDataSetChanged();
+//		CustomTextView item = (CustomTextView) parent.getItemAtPosition(pos);
+//		arrayAdapter.remove(item);
+//		TextView strikedText = new TextView(this);
+//		strikedText.setText(item);
+//		item.setPaintFlags(item.getPaintFlags() ^ Paint.STRIKE_THRU_TEXT_FLAG);
+//		item = (String) strikedText.getText();
+//		arrayAdapter.insert(item, pos);
+//		simpleAdapter.notifyDataSetChanged();
 	}
 
 	/**
 	 *
 	 * @param shoppinglistId
-	 * @param arrayAdapter
+	 * @param simpleAdapter
 	 */
-	private void requestDataFromDB(int shoppinglistId) {
+	private ArrayList<HashMap<String, TextView>> requestDataFromDB(int shoppinglistId) {
 //		String queryArticles = "SELECT articles.* FROM " + DatabaseConnection.TABLE_ARTICLES + " articles , " + DatabaseConnection.TABLE_LISTINGS + " listings " +
 //					   "WHERE listings.shoppinglist_id = " + shoppinglistId +
 //					   " AND listings.article_id = articles.id";
+		ArrayList<HashMap<String, TextView>> data = new ArrayList<HashMap<String,TextView>>();
 		String queryListing = "SELECT listings.* FROM " + DatabaseConnection.TABLE_LISTINGS + " listings " +
 							  "WHERE listings.shoppinglist_id = " + shoppinglistId;
         DatabaseConnection dbConnection = new DatabaseConnection(this);
@@ -104,11 +95,16 @@ public class ListingActivity extends ListActivity implements OnItemLongClickList
         	Article article = getCorrespondingArticle(db, cursorListing.getInt(cursorListing.getColumnIndex(DatabaseConnection.COLUMN_ARTICLE_ID)));
         	mixedAmountArticle += article.getName();
 //          add article and amount to listView
-        	arrayAdapter.add(mixedAmountArticle);
-        	Log.i(ShoppingListsActivity.class.getName(), "Added article: " + " to listview");
+        	TextView textView = new TextView(this);
+        	textView.setText(mixedAmountArticle);
+        	HashMap<String, TextView> item = new HashMap<String, TextView>();
+        	item.put("content", textView);
+        	data.add(item);
+        	Log.i(ShoppingListsActivity.class.getName(), "Added article: " + article.getName() + " to hashmap");
 			cursorListing.moveToNext();
         }
         dbConnection.close();
+        return data;
 	}
 
 	/**

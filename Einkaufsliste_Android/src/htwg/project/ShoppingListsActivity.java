@@ -49,7 +49,7 @@ public class ShoppingListsActivity extends ListActivity{
 		Shoppinglist shoppingList = (Shoppinglist) parent.getItemAtPosition(pos);
 
 //		start Activity to show Shoppinglists from selected user
-		Intent intent = new Intent(this, ListingActivity.class);
+		Intent intent = new Intent(this, ShowStoresActivity.class);
 		intent.putExtra("user_id", bundle.getInt("user_id"));
 		intent.putExtra("shoppinglist_id", shoppingList.getId());
 		startActivity(intent);
@@ -68,7 +68,9 @@ public class ShoppingListsActivity extends ListActivity{
         Cursor cursor = db.query(DatabaseConnection.TABLE_SHOPPINGLISTS, columns, selection, null, null, null, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
-        	Shoppinglist list = new Shoppinglist(cursor.getInt(0), cursor.getString(1), cursor.getInt(2));
+        	Shoppinglist list = new Shoppinglist(cursor.getInt(cursor.getColumnIndex(DatabaseConnection.COLUMN_ID)),
+        										 cursor.getString(cursor.getColumnIndex(DatabaseConnection.COLUMN_NAME)),
+        										 cursor.getInt(cursor.getColumnIndex(DatabaseConnection.COLUMN_USER_ID)));
 //          add shoppingLists to listView
         	arrayAdapter.add(list);
         	Log.i(ShoppingListsActivity.class.getName(), "Added shoppinglist: " + list.getName() + " to listview");
