@@ -3,8 +3,7 @@ package htwg.project;
 import htwg.backend.Article;
 import htwg.connection.DatabaseConnection;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 
 import android.app.ListActivity;
 import android.database.Cursor;
@@ -13,14 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 public class ListingActivity extends ListActivity {
 
 	private Bundle bundle = null;
-	private SimpleAdapter simpleAdapter = null;
+	ArrayAdapter<String> arrayAdapter = null;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -31,21 +29,21 @@ public class ListingActivity extends ListActivity {
 
         bundle = this.getIntent().getExtras();
         int shoppinglistId = bundle.getInt("shoppinglist_id");
-
+        boolean showAllArticles = bundle.getBoolean("show_all_articles");
         ListView listView = getListView();
 //      deactivate stand-by mode
         listView.setKeepScreenOn(true);
-
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 //        db query
-        ArrayList<HashMap<String, TextView>> data = requestDataFromDB(shoppinglistId);
+        requestDataFromDB(shoppinglistId, showAllArticles);
 //        sort strings
-//        arrayAdapter.sort(new Comparator<String>() {
-//        	public int compare(String obj1, String obj2) {
-//        		return obj1.compareTo(obj2);
-//        	}
-//		});
-        simpleAdapter = new SimpleAdapter(this, data, android.R.layout.simple_list_item_1, new String[] {"content"}, new int[] {android.R.layout.simple_list_item_1});
-        listView.setAdapter(simpleAdapter);
+        arrayAdapter.sort(new Comparator<String>() {
+        	public int compare(String obj1, String obj2) {
+        		return obj1.compareTo(obj2);
+        	}
+		});
+
+        listView.setAdapter(arrayAdapter);
 	}
 
 	/** Called when the activity is paused or shutdowned */
@@ -54,34 +52,32 @@ public class ListingActivity extends ListActivity {
 		super.onPause();
 	}
 
-//	TODO: Does not work!!
 	/**
-	 * stikes an item if clicked
+	 * (un)marks an item if selected
+	 * Strikethrough does not work because listView uses Strings
 	 */
 	@Override
 	public void onListItemClick(ListView parent, View view, int pos, long id) {
 		super.onListItemClick(parent, view, pos, id);
 		Log.i("test", "item selected: " + pos + " id: " + id);
-//		CustomTextView item = (CustomTextView) parent.getItemAtPosition(pos);
-//		arrayAdapter.remove(item);
-//		TextView strikedText = new TextView(this);
-//		strikedText.setText(item);
-//		item.setPaintFlags(item.getPaintFlags() ^ Paint.STRIKE_THRU_TEXT_FLAG);
-//		item = (String) strikedText.getText();
-//		arrayAdapter.insert(item, pos);
-//		simpleAdapter.notifyDataSetChanged();
+		String item = (String) parent.getItemAtPosition(pos);
+		arrayAdapter.remove(item);
+		if(item.contains("XX")) {
+			String[] split = item.split("XX");
+			item = split[1];
+		}else {
+			item = "XX" + item + "XX";
+		}
+		arrayAdapter.insert(item, pos);
+		arrayAdapter.notifyDataSetChanged();
 	}
 
 	/**
-	 *
-	 * @param shoppinglistId
+	 * query db for all articles which have the given shoppinglistId
+	 * @param shoppinglistId -
 	 * @param simpleAdapter
 	 */
-	private ArrayList<HashMap<String, TextView>> requestDataFromDB(int shoppinglistId) {
-//		String queryArticles = "SELECT articles.* FROM " + DatabaseConnection.TABLE_ARTICLES + " articles , " + DatabaseConnection.TABLE_LISTINGS + " listings " +
-//					   "WHERE listings.shoppinglist_id = " + shoppinglistId +
-//					   " AND listings.article_id = articles.id";
-		ArrayList<HashMap<String, TextView>> data = new ArrayList<HashMap<String,TextView>>();
+	private void requestDataFromDB(int shoppinglistId, boolean showAllArticles) {
 		String queryListing = "SELECT listings.* FROM " + DatabaseConnection.TABLE_LISTINGS + " listings " +
 							  "WHERE listings.shoppinglist_id = " + shoppinglistId;
         DatabaseConnection dbConnection = new DatabaseConnection(this);
@@ -92,35 +88,49 @@ public class ListingActivity extends ListActivity {
         	String mixedAmountArticle = "";
         	Integer amount = cursorListing.getInt(cursorListing.getColumnIndex(DatabaseConnection.COLUMN_AMOUNT));
         	mixedAmountArticle += amount.toString() + " x ";
-        	Article article = getCorrespondingArticle(db, cursorListing.getInt(cursorListing.getColumnIndex(DatabaseConnection.COLUMN_ARTICLE_ID)));
-        	mixedAmountArticle += article.getName();
-//          add article and amount to listView
-        	TextView textView = new TextView(this);
-        	textView.setText(mixedAmountArticle);
-        	HashMap<String, TextView> item = new HashMap<String, TextView>();
-        	item.put("content", textView);
-        	data.add(item);
-        	Log.i(ShoppingListsActivity.class.getName(), "Added article: " + article.getName() + " to hashmap");
+        	Article article = getCorrespondingArticle(db, cursorListing.getInt(cursorListing.getColumnIndex(DatabaseConnection.COLUMN_ARTICLE_ID)), showAllArticles);
+        	if(article != null) {
+	        	mixedAmountArticle += article.getName();
+//	          	add article and amount to listView
+	        	arrayAdapter.add(mixedAmountArticle);
+	        	Log.i(ShoppingListsActivity.class.getName(), "Added article: " + mixedAmountArticle + " to arraylist");
+        	}
 			cursorListing.moveToNext();
         }
         dbConnection.close();
-        return data;
 	}
 
 	/**
 	 * search for specified article
+	 * if storeId is given, we return only articles which are in this store
 	 * @param db - db to search through
 	 * @param articleId - article identifier
 	 * @return article with the specified articleId
 	 */
-	private Article getCorrespondingArticle(SQLiteDatabase db, int articleId) {
-		String[] columnsArticle = {DatabaseConnection.COLUMN_ID, DatabaseConnection.COLUMN_NAME, DatabaseConnection.COLUMN_PRICE};
-		String selection = DatabaseConnection.COLUMN_ID + " = " + articleId;
-		Cursor cursorArticle = db.query(DatabaseConnection.TABLE_ARTICLES, columnsArticle, selection, null, null, null, null);
+	private Article getCorrespondingArticle(SQLiteDatabase db, int articleId, boolean showAllArticles) {
+		Cursor cursorArticle = null;
+		if(showAllArticles) {
+			String queryAllArticles = "SELECT articles.* FROM " + DatabaseConnection.TABLE_ARTICLES + " articles " +
+					  "WHERE articles." + DatabaseConnection.COLUMN_ID + " = " + articleId;
+			cursorArticle = db.rawQuery(queryAllArticles, null);
+		} else {
+			int storeId = bundle.getInt("store_id");
+			String queryArticlesInStore = "SELECT articles.* FROM " + DatabaseConnection.TABLE_ARTICLES + " articles, " +
+										   DatabaseConnection.TABLE_STORES_ARTICLES + " stores_articles, " + DatabaseConnection.TABLE_STORES + " stores " +
+										   "WHERE articles." + DatabaseConnection.COLUMN_ID + " = " + articleId + " " +
+										   "AND stores_articles." + DatabaseConnection.COLUMN_ARTICLE_ID + " = " + articleId + " " +
+										   "AND stores_articles." + DatabaseConnection.COLUMN_STORE_ID + " = " + storeId;
+			cursorArticle = db.rawQuery(queryArticlesInStore, null);
+		}
 		cursorArticle.moveToFirst();
-		Article article = new Article(cursorArticle.getInt(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_ID)),
-									  cursorArticle.getString(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_NAME)),
-									  cursorArticle.getDouble(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_PRICE)));
-		return article;
+		if(cursorArticle != null && !cursorArticle.isAfterLast()) {
+			Article article = new Article(cursorArticle.getInt(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_ID)),
+										  cursorArticle.getString(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_NAME)),
+										  cursorArticle.getDouble(cursorArticle.getColumnIndex(DatabaseConnection.COLUMN_PRICE)));
+			Log.i(ListingActivity.class.getName(), "Found article: " + article.getName());
+			return article;
+		} else {
+			return null;
+		}
 	}
 }
