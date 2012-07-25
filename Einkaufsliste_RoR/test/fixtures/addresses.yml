@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 Musterstrasse:
-  street: Musterstraße 12.
+  street: Musterstrasse 12
   zipCode: D-12354
   city: Musterstadt
 

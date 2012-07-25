@@ -1,23 +1,34 @@
 require 'test_helper'
 
 class ArticleTest < ActiveSupport::TestCase
-  test "add article" do
-    
+  test "required attributes" do
+    article = Article.new
+    assert !article.valid?
+    assert article.errors.get(:name)
+    assert !article.errors.get(:price)
   end
   
-  test "only save one article with same name and price" do
-    
+  test "unique_article" do
+    article = Article.new(:name => "Gruyer (150g)", :price => "3.89")
+    assert !article.save
   end
   
-  test "do not save article with missing attribute" do
+  test "create and delete an Article" do
+    article = Article.new(:name => "test1", :price => "1.11")
     
+    assert article.save
+    
+    assert article.delete               
   end
   
-  test "throw error when adding shoppinglist reference to article" do
+  test "associate store with article" do
+    article = articles(:Kaese)
+    store = stores(:Rewe)
     
-  end
-  
-  test "add store reference to article" do
+    cnt_references_to_store = article.stores.count
     
+    article.stores << store
+    
+    assert_not_equal(cnt_references_to_store, article.stores.count)
   end
 end

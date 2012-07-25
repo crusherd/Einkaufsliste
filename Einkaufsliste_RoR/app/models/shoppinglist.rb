@@ -5,7 +5,8 @@ class Shoppinglist < ActiveRecord::Base
   # validation
   validates :name, :presence => true, :allow_nil => false, :allow_blank => false
   validates :user_id, :presence => true, :allow_nil => false, :allow_blank => false
-  
+  validates :creationDate, :presence => true, :allow_nil => false, :allow_blank => false
+  # validate uniqueness of List
   validates :name, :uniqueness => true
   
   # relationships
