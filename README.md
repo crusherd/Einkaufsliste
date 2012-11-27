@@ -11,13 +11,13 @@ Permissions in Android:
 =====================
 
 Deaktivieren des Standby:
-android.permission.DEVICE_POWER
-android.permission.WAKE_LOCK
+* android.permission.DEVICE_POWER
+* android.permission.WAKE_LOCK
 
 Zugriff auf Netzwerk:
-android.permission.INTERNET
-android.permission.ACCESS_WIFI_STATE
-android.permission.ACCESS_NETWORK_STATE
+* android.permission.INTERNET
+* android.permission.ACCESS_WIFI_STATE
+* android.permission.ACCESS_NETWORK_STATE
 
 Anforderungen für Ruby on Rails
 ===============================
